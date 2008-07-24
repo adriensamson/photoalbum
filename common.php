@@ -8,9 +8,10 @@
 
 $uploaddir = "files/";
 $thumbdir = "thumbs/";
-
-mysql_connect('localhost', 'photoalbum', 'photosecret');
-mysql_select_db('photoalbum');
+include('secret.php');
+mysql_connect($db_host, $db_user, $db_pass);
+mysql_select_db($db_db);
+unset($db_host, $db_user, $db_pass, $db_db);
 
 function auth()
 {
