@@ -1,0 +1,17 @@
+span.legend
+{
+background-color: white;
+color: black;
+}
+div.commentbox
+{
+width: 600px;
+}
+div.comment
+{
+border: solid 1px black;
+}
+span.writer
+{
+font-weight: bold;
+}
