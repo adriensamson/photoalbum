@@ -50,7 +50,8 @@ if ($user['id_user']==-1)
 	echo "<p><a href='login.php'>S'identifier</a></p>";
 else
 	echo "<p><a href='login.php?action=logout'>Se déconnecter</a></p>";
-echo "</body>
+echo "<p>En cas de bug, ou de demande d'amélioration, ça se passe sur <a href='http://redmine.kyklydse.com/projects/show/photoalbum'>Redmine</a>.</p>
+</body>
 </html>";
 
 ?>
