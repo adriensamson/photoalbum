@@ -69,7 +69,7 @@ echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xh
 <script type='text/javascript'>
 $jvars
 </script>
-<script type='text/javascript' src='viewphoto.js'/>
+<script type='text/javascript' src='viewphoto.js'></script>
 </head>
 <body onload='creatediv();'>
 <h1>Visualisation d'une photo</h1>
@@ -108,7 +108,7 @@ $comment[comment]
 }
 echo "<form method='post' action='comment.php'>
 <div class='commentinput'>
-<textarea cols='80' rows='10' name='comment'/><br/>
+<textarea cols='80' rows='10' name='comment'></textarea><br/>
 <input type='hidden' name='id_photo' value='$id_photo'/>
 <input type='submit' value='Envoyer'/>
 </div></form>
