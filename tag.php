@@ -34,7 +34,7 @@ if (!isset($_REQUEST['action']))
 <script type='text/javascript'>
 var imgw = $imgw;
 </script>
-<script type='text/javascript' src='tag.js'/>
+<script type='text/javascript' src='tag.js'></script>
 </head>
 <body onload='resize();'>
 <h1>Tag</h1>
