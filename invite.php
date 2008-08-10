@@ -30,7 +30,7 @@ if (!isset($_REQUEST['action']))
 Nom : <input name='name'/><br/>
 E-mail : <input name='email'/><br/>
 Message personnel :<br/>
-<textarea name='persmsg' cols='80' rows='10'/><br/>
+<textarea name='persmsg' cols='80' rows='10'></textarea><br/>
 <input type='hidden' name='action' value='invite'/>";
 	if (isset($_SERVER['HTTP_REFERER'])) echo "<input type='hidden' name='redirect' value='$_SERVER[HTTP_REFERER]'/>\n";
 	echo "<input type='submit' value='Inviter'/>
@@ -56,12 +56,16 @@ elseif ($_REQUEST['action']=='invite')
 	mysql_query("INSERT INTO photoalbum_users (email, name, invite) VALUES ('$memail', '$mname', '$invite')");
 	$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/invite.php?action=invited&invite=$invite";
 	$message = "$name, $from_name vous a ajouté et invité sur un album photo.
-Pour voir les photos sur lesquelles vous êtes, il suffit de suivre le lien suivant :
+Pour voir les photos sur lesquelles vous êtes, il suffit de vous inscrire grâce au lien suivant :
 $url
 
 $persmsg
 
-A bientôt.";
+A bientôt.
+--
+Il est conseillé d'utiliser Firefox pour que le site fonctionne correctement.
+http://www.getfirefox.com
+";
 	$subject = "$from_name vous a invité sur un album photo";
 	$header='Content-Type: text/plain; charset="UTF-8"\r\n';
 	mail($email, $subject, $message, $header, '-f photoalbum@kyklydse.com');
