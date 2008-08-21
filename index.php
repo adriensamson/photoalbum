@@ -19,37 +19,41 @@ echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xh
 <body>
 <h1>Photoalbum</h1>";
 
-$sql = mysql_query("SELECT title, id_album FROM photoalbum_albums WHERE id_owner=$id_user ORDER BY title ASC");
-echo "<p><strong>Mes albums :</strong><br/>";
-if (mysql_num_rows($sql)!=0)
-{
-	while($row=mysql_fetch_assoc($sql))
-	{
-		$title=$row['title'];
-		$id_album=$row['id_album'];
-		echo "<a href='viewalbum.php?id_album=$id_album'>$title</a><br/>";
-	}
-}
-echo "<br/><a href='newalbum.php'>Créer un nouvel album</a></p>";
-
-$sql=mysql_query("SELECT title, id_album FROM photoalbum_albums WHERE id_album IN
-		(SELECT p.id_album FROM photoalbum_photos AS p LEFT JOIN photoalbum_tags AS t ON t.id_photo=p.id_photo
-		WHERE t.id_user=$id_user) ORDER BY title ASC");
-if (mysql_num_rows($sql)!=0)
-{
-	echo "<p><strong>Albums où je suis :</strong><br/>";
-	while($row=mysql_fetch_assoc($sql))
-	{
-		$title=$row['title'];
-		$id_album=$row['id_album'];
-		echo "<a href='viewalbum.php?id_album=$id_album'>$title</a><br/>";
-	}
-	echo "</p>";
-}
 if ($user['id_user']==-1)
 	echo "<p><a href='login.php'>S'identifier</a></p>";
 else
+{
+	$sql=mysql_query("SELECT title, id_album FROM photoalbum_albums WHERE id_album IN
+			(SELECT p.id_album FROM photoalbum_photos AS p LEFT JOIN photoalbum_tags AS t ON t.id_photo=p.id_photo
+			WHERE t.id_user=$id_user) ORDER BY title ASC");
+	if (mysql_num_rows($sql)!=0)
+	{
+		echo "<p><strong>Albums où je suis :</strong><br/>";
+		while($row=mysql_fetch_assoc($sql))
+		{
+			$title=$row['title'];
+			$id_album=$row['id_album'];
+			echo "<a href='viewalbum.php?id_album=$id_album'>$title</a><br/>";
+		}
+		echo "</p>";
+	}
+	
+	$sql = mysql_query("SELECT title, id_album FROM photoalbum_albums WHERE id_owner=$id_user ORDER BY title ASC");
+	echo "<p><strong>Mes albums :</strong><br/>";
+	if (mysql_num_rows($sql)!=0)
+	{
+		while($row=mysql_fetch_assoc($sql))
+		{
+			$title=$row['title'];
+			$id_album=$row['id_album'];
+			echo "<a href='viewalbum.php?id_album=$id_album'>$title</a><br/>";
+		}
+	}
+	echo "<br/><a href='newalbum.php'>Créer un nouvel album</a></p>";
+
 	echo "<p><a href='login.php?action=logout'>Se déconnecter</a></p>";
+}
+
 echo "<p>En cas de bug, ou de demande d'amélioration, ça se passe sur <a href='http://redmine.kyklydse.com/projects/show/photoalbum'>Redmine</a>.</p>
 </body>
 </html>";
