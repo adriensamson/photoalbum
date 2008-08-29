@@ -52,8 +52,8 @@ else
 	echo "</p>";
 	
 	$sql = mysql_query("SELECT id_user, name FROM photoalbum_users WHERE true ORDER BY name ASC");
-	echo "<p><strong>Voir les photos de quelqu'un :</strong><br/>
-	<form action='viewuser.php' method='get'>
+	echo "<form action='viewuser.php' method='get'>
+	<p><strong>Voir les photos de quelqu'un :</strong><br/>
 	<select name='id_user'>";
 	if (mysql_num_rows($sql)!=0)
 	{
@@ -65,9 +65,9 @@ else
 		}
 	}
 	echo "</select>
-	<input type='submit' name='Envoyer' value='OK' /></form>";
+	<input type='submit' name='Envoyer' value='OK' /></p></form>";
 	
-	echo "<br/><a href='newalbum.php'>Créer un nouvel album</a></p>";
+	echo "<p><a href='newalbum.php'>Créer un nouvel album</a></p>";
 
 	echo "<p><a href='login.php?action=logout'>Se déconnecter</a></p>";
 }
