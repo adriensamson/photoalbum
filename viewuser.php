@@ -12,7 +12,8 @@ $id_user = intval($_REQUEST['id_user']);
 $sql = mysql_query("SELECT name FROM photoalbum_users WHERE id_user=$id_user");
 $row = mysql_fetch_assoc($sql);
 $name = $row['name'];
-$sql = mysql_query("SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user ORDER BY id_photo ASC");
+$last_id_album=0;
+$sql = mysql_query("SELECT id_photo,id_album FROM photoalbum_tags WHERE id_user=$id_user ORDER BY id_album ASC, id_photo ASC");
 if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
 	header('Content-Type: text/html');
 else
@@ -26,6 +27,16 @@ echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xh
 while ($row = mysql_fetch_assoc($sql))
 {
 	$id_photo=$row['id_photo'];
+	$id_album=$row['id_album'];
+	if($id_album!=$last_id_album)
+	{
+		$last_id_album=$id_album;
+		$sql = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
+		$row = mysql_fetch_assoc($sql);
+		$title = $row['title'];
+		echo "</p>
+		<p><h2>$title</h2><br />";
+	}
 	if (can_access_photo($user['id_user'], $id_photo))
 		echo "<a href='viewphoto.php?id_photo=$id_photo'><img src='photo.php?id_photo=$id_photo&amp;thumb=y' alt='photo'/></a>&nbsp;";
 }
