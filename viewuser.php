@@ -12,7 +12,7 @@ $id_user = intval($_REQUEST['id_user']);
 $sql = mysql_query("SELECT name FROM photoalbum_users WHERE id_user=$id_user");
 $row = mysql_fetch_assoc($sql);
 $name = $row['name'];
-$last_id_album=0;
+$last_id_album=-1;
 $sql=mysql_query("SELECT id_photo, id_album FROM photoalbum_photos WHERE id_photo IN
 			(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user) ORDER BY id_album ASC, id_photo ASC");
 
@@ -35,8 +35,8 @@ while ($row = mysql_fetch_assoc($sql))
 		if($id_album!=$last_id_album)
 		{
 			$last_id_album=$id_album;
-			$sql = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
-			$row2 = mysql_fetch_assoc($sql);
+			$sql2 = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
+			$row2 = mysql_fetch_assoc($sql2);
 			$title = $row2['title'];
 			echo "</p>
 			<p><h2>$title</h2><br />";
