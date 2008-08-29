@@ -13,7 +13,9 @@ $sql = mysql_query("SELECT name FROM photoalbum_users WHERE id_user=$id_user");
 $row = mysql_fetch_assoc($sql);
 $name = $row['name'];
 $last_id_album=0;
-$sql = mysql_query("SELECT id_photo,id_album FROM photoalbum_tags WHERE id_user=$id_user ORDER BY id_album ASC, id_photo ASC");
+$sql=mysql_query("SELECT id_photo, id_album FROM photoalbum_photos WHERE id_photo IN
+			(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user) ORDER BY id_album ASC, id_photo ASC");
+
 if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
 	header('Content-Type: text/html');
 else
