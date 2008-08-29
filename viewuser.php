@@ -30,17 +30,19 @@ while ($row = mysql_fetch_assoc($sql))
 {
 	$id_photo=$row['id_photo'];
 	$id_album=$row['id_album'];
-	if($id_album!=$last_id_album)
-	{
-		$last_id_album=$id_album;
-		$sql = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
-		$row = mysql_fetch_assoc($sql);
-		$title = $row['title'];
-		echo "</p>
-		<p><h2>$title</h2><br />";
-	}
 	if (can_access_photo($user['id_user'], $id_photo))
+	{
+		if($id_album!=$last_id_album)
+		{
+			$last_id_album=$id_album;
+			$sql = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
+			$row2 = mysql_fetch_assoc($sql);
+			$title = $row2['title'];
+			echo "</p>
+			<p><h2>$title</h2><br />";
+		}
 		echo "<a href='viewphoto.php?id_photo=$id_photo'><img src='photo.php?id_photo=$id_photo&amp;thumb=y' alt='photo'/></a>&nbsp;";
+	}
 }
 echo "</p>";
 echo "<p>
