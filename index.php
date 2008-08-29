@@ -49,6 +49,24 @@ else
 			echo "<a href='viewalbum.php?id_album=$id_album'>$title</a><br/>";
 		}
 	}
+	echo "</p>";
+	
+	$sql = mysql_query("SELECT id_user, name FROM photoalbum_users WHERE true ORDER BY name ASC");
+	echo "<p><strong>Voir les photos de quelqu'un :</strong><br/>
+	<form action='viewuser.php' method='get'>
+	<select name='id_user'>";
+	if (mysql_num_rows($sql)!=0)
+	{
+		while($row=mysql_fetch_assoc($sql))
+		{
+			$id_user=$row['id_user'];
+			$name=$row['name'];
+			echo "<option value='$id_user'>$name</option>";
+		}
+	}
+	echo "</select>
+	<input type='submit' name='Envoyer' value='OK' /></form>";
+	
 	echo "<br/><a href='newalbum.php'>Créer un nouvel album</a></p>";
 
 	echo "<p><a href='login.php?action=logout'>Se déconnecter</a></p>";
