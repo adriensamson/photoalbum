@@ -28,7 +28,12 @@ echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xh
 while ($row = mysql_fetch_assoc($sql))
 {
 	$id_photo=$row['id_photo'];
-	echo "<a href='viewphoto.php?id_photo=$id_photo'><img src='photo.php?id_photo=$id_photo&amp;thumb=y' alt='photo'/></a>&nbsp;";
+	$sql2 = mysql_query("SELECT COUNT(*) FROM photoalbum_comments WHERE id_photo=$id_photo");
+	$row2 = mysql_fetch_row($sql2);
+	if ($row2[0] <= 0) $text_comm="Pas de commentaire";
+	elseif($row2[0] == 1) $text_comm="1 commentaire";
+	else $text_comm= $row2[0]." commentaires";
+	echo "<a href='viewphoto.php?id_photo=$id_photo'><img src='photo.php?id_photo=$id_photo&amp;thumb=y' alt='$text_comm' title='$text_comm'/></a>&nbsp;";
 }
 echo "</p>";
 if (is_owner($user['id_user'], $id_album))
