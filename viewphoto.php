@@ -56,8 +56,12 @@ else
 	
 if (mysql_num_rows($sql)!=0)
 {
-	$row = mysql_fetch_assoc($sql);
-	$next = $row['id_photo'];
+	while ($row = mysql_fetch_assoc($sql))
+		if (can_access_photo($user['id_user'],$row['id_photo']))
+		{
+			$next = $row['id_photo'];
+			break;
+		}
 }
 
 if(isset($id_user))
@@ -68,8 +72,12 @@ else
 	
 if (mysql_num_rows($sql)!=0)
 {
-	$row = mysql_fetch_assoc($sql);
-	$prev = $row['id_photo'];
+	while ($row = mysql_fetch_assoc($sql))
+		if (can_access_photo($user['id_user'],$row['id_photo']))
+		{
+			$prev = $row['id_photo'];
+			break;
+		}
 }
 
 if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
