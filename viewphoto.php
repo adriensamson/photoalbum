@@ -9,6 +9,9 @@
 include("common.php");
 $user = auth();
 $id_photo = intval($_REQUEST['id_photo']);
+if (intval($_REQUEST['id_user'])>0)
+	$id_user = intval($_REQUEST['id_user']);
+	
 if (!can_access_photo($user['id_user'], $id_photo))
 	exit("Not authorized");
 $sql=mysql_query("SELECT id_album, imgw FROM photoalbum_photos WHERE id_photo=$id_photo");
@@ -44,13 +47,25 @@ while ($row=mysql_fetch_assoc($sql))
 {
 	$comments[]=$row;
 }
-$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE id_album=$id_album AND id_photo>$id_photo ORDER BY id_photo ASC LIMIT 1");
+
+if(isset($id_user))
+	$sql=mysql_query("SELECT id_photo, id_album FROM photoalbum_photos WHERE id_photo IN
+			(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user) AND ((id_album=$id_album AND id_photo>$id_photo) OR (id_album>$id_album)) ORDER BY id_album ASC, id_photo ASC");
+else
+	$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE id_album=$id_album AND id_photo>$id_photo ORDER BY id_photo ASC LIMIT 1");
+	
 if (mysql_num_rows($sql)!=0)
 {
 	$row = mysql_fetch_assoc($sql);
 	$next = $row['id_photo'];
 }
-$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE id_album=$id_album AND id_photo<$id_photo ORDER BY id_photo DESC LIMIT 1");
+
+if(isset($id_user))
+	$sql=mysql_query("SELECT id_photo, id_album FROM photoalbum_photos WHERE id_photo IN
+			(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user) AND ((id_album=$id_album AND id_photo<$id_photo) OR (id_album<$id_album)) ORDER BY id_album DESC, id_photo DESC");
+else
+	$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE id_album=$id_album AND id_photo<$id_photo ORDER BY id_photo DESC LIMIT 1");
+	
 if (mysql_num_rows($sql)!=0)
 {
 	$row = mysql_fetch_assoc($sql);
@@ -88,15 +103,32 @@ foreach($text as $i => $name)
 		echo ".<br/>"; 
 }
 echo "<a href='tag.php?id_photo=$id_photo'>Taguer</a><br/>
-</p>
-<p><a href='viewalbum.php?id_album=$id_album'>Retour à l'album</a><br/>
-<a href='index.php'>Retour à l'accueil</a><br/>
+</p>";
+
+if(isset($id_user))
+{
+	$sql=mysql_query("SELECT name FROM photoalbum_users WHERE id_user=$id_user");
+	$row = mysql_fetch_row($sql);
+	echo "<p><a href='viewuser.php?id_user=$id_user'>Retour à l'album de $row[0]</a><br/>";
+}
+else
+	echo "<p><a href='viewalbum.php?id_album=$id_album'>Retour à l'album</a><br/>";
+
+echo "<a href='index.php'>Retour à l'accueil</a><br/>
 </p>
 <div class='navbox'>";
-if (isset($prev))
-	echo "<div class='prev'><a href='viewphoto.php?id_photo=$prev'>Photo précedente</a></div>";
-if (isset($next))
-	echo "<div class='next'><a href='viewphoto.php?id_photo=$next'>Photo suivante</a></div>";
+if (isset($id_user))
+{
+	if (isset($prev))
+		echo "<div class='prev'><a href='viewphoto.php?id_photo=$prev&amp;id_user=$id_user'>Photo précedente</a></div>";
+	if (isset($next))
+		echo "<div class='next'><a href='viewphoto.php?id_photo=$next&amp;id_user=$id_user'>Photo suivante</a></div>";
+} else {
+	if (isset($prev))
+		echo "<div class='prev'><a href='viewphoto.php?id_photo=$prev'>Photo précedente</a></div>";
+	if (isset($next))
+		echo "<div class='next'><a href='viewphoto.php?id_photo=$next'>Photo suivante</a></div>";
+}
 echo "</div>
 <div class='commentbox'>Commentaires<br/>";
 foreach($comments as $comment)

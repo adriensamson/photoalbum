@@ -46,7 +46,7 @@ while ($row = mysql_fetch_assoc($sql))
 	if ($row2[0] <= 0) $text_comm="Pas de commentaire";
 	elseif($row2[0] == 1) $text_comm="1 commentaire";
 	else $text_comm= $row2[0]." commentaires";
-	echo "<a href='viewphoto.php?id_photo=$id_photo'><img src='photo.php?id_photo=$id_photo&amp;thumb=y' alt='$text_comm' title='$text_comm'/></a>&nbsp;";
+	echo "<a href='viewphoto.php?id_user=$id_user&amp;id_photo=$id_photo'><img src='photo.php?id_photo=$id_photo&amp;thumb=y' alt='$text_comm' title='$text_comm'/></a>&nbsp;";
 	}
 }
 echo "</p>";
