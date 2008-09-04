@@ -38,6 +38,11 @@ while ($row = mysql_fetch_assoc($sql))
 echo "</p>";
 if (is_owner($user['id_user'], $id_album))
 	echo "<p><a href='upload.php?id_album=$id_album'>Ajouter une photo</a></p>";
+
+echo "<p>
+<a href='zipalbum.php?id_album=$id_album'>Télécharger l'album</a>
+</p>";
+
 echo "<p>
 <a href='index.php'>Retour à l'accueil</a>
 </p>
