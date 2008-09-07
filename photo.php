@@ -9,7 +9,13 @@
 include("common.php");
 $user = auth();
 $id_photo = intval($_REQUEST['id_photo']);
-$dir = (isset($_REQUEST['thumb'])) ? $thumbdir : $uploaddir;
+if (isset($_REQUEST['thumb']))
+	$dir = $thumbdir;
+elseif (isset($_REQUEST['fullsize']))
+	$dir = $uploaddir;
+else
+	$dir = $photodir;
+
 if (!can_access_photo($user['id_user'], $id_photo))
 	exit("Not authorized");
 

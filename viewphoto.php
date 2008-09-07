@@ -97,9 +97,9 @@ $jvars
 <body onload='creatediv();'>
 <h1>Visualisation d'une photo</h1>
 <p>
-<img id='photo' src='photo.php?id_photo=$id_photo' alt='photo' onmousemove='mouse(event);' ondblclick='resize();' width='800'/>
+<img id='photo' src='photo.php?id_photo=$id_photo' alt='photo' onmousemove='mouse(event);'/>
 </p>
-<p>";
+<p><a href='photo.php?id_photo=$id_photo&amp;fullsize=y'>Taille réelle</a></p><p>";
 if ($n > 0)
 	echo "Sur cette photo : ";
 foreach($text as $i => $name)

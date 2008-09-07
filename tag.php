@@ -39,11 +39,10 @@ var imgw = $imgw;
 <body onload='resize();'>
 <h1>Tag</h1>
 <p>Un premier clic pour le coin en haut à gauche, un deuxième pour le coin en bas à droite et les suivants pour redimensioner.<br/>
-Un double clic redimensionne la photo (mais compte aussi pour deux clics).
 </p>
 <form method='post' action='tag.php'>
 <p>
-<img id='photo' src='photo.php?id_photo=$id_photo' width='800' alt='image' onclick='clicked(event)' ondblclick='resize();'/><br/>
+<img id='photo' src='photo.php?id_photo=$id_photo' alt='image' onclick='clicked(event)'/><br/>
 Nom : <select name='id_user'>";
 
 	foreach($options as $id_user => $name)
