@@ -61,8 +61,8 @@ else
 	$image = new Imagick($uploaddir.$filename);
 	$imgw = $image->getImageWidth();
 	
-	system("convert $uploaddir$filename -thumbnail 100x100 $thumbdir$filename > /dev/null");
-	system("convert $uploaddir$filename -resize 800x800 $photodir$filename > /dev/null");
+	system("convert $uploaddir$filename -thumbnail 100x100 $thumbdir$filename &");
+	system("convert $uploaddir$filename -resize 800x800 $photodir$filename &");
 	
 	$filename = mysql_real_escape_string($filename);
 	mysql_query("INSERT INTO photoalbum_photos (filename, id_album, imgw) VALUES ('$filename', $id_album, $imgw)");
