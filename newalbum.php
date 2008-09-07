@@ -45,6 +45,7 @@ else
 	$id_album = $row['id_album'];
 	mkdir($uploaddir.$id_album);
 	mkdir($thumbdir.$id_album);
+	mkdir($photodir.$id_album);
 	log_newalbum($user['id_user'], $user['name'], $id_album);
 	$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/upload.php?id_album=$id_album";
 	header("Location: $url");
