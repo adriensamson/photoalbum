@@ -32,7 +32,7 @@
 
 <xsl:template match="peoplelist">
 	<xsl:for-each select="people">
-		<option name="{id}"><xsl:value-of select="name"/></option>
+		<option value="{id}"><xsl:value-of select="name"/></option>
 	</xsl:for-each>
 </xsl:template>
 </xsl:stylesheet>
