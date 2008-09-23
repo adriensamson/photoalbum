@@ -22,23 +22,12 @@ elseif ($user['id_user']!=-1)
 }
 elseif (!isset($_REQUEST['action']))
 {
-	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
-		header('Content-Type: text/html');
-	else
-		header('Content-Type: application/xhtml+xml');
-	echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head><title>Identification</title></head>
-<body>
-<form method='post' action='login.php'>
-<p>
-<input type='hidden' name='action' value='login'/>
-Nom : <input name='username'/><br/>
-Mot de passe : <input type='password' name='passwd'/><br/>
-<input type='submit' value='Login'/>
-</p>
-</form>
-</body></html>";
+	header('Content-Type: application/xml');
+	echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href='styles/login.xsl' type='text/xsl'?>
+<photoalbum>
+	<title>Identification</title>
+	<body page='login'/></photoalbum>";
 }
 else
 {

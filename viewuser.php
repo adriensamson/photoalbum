@@ -12,48 +12,52 @@ $id_user = intval($_REQUEST['id_user']);
 $sql = mysql_query("SELECT name FROM photoalbum_users WHERE id_user=$id_user");
 $row = mysql_fetch_assoc($sql);
 $name = $row['name'];
+
+header('Content-Type: application/xml');
+echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href='styles/viewuser.xsl' type='text/xsl'?>
+<photoalbum>
+	<login>$user[name]</login>
+	<title>$name</title>
+	<iduser>$id_user</iduser>
+	<menuitem>
+		<title>Accueil</title>
+		<link>index.php</link>
+	</menuitem>
+	<body page='viewuser'>";
+	
+
+$can_access = select_can_access_photo($user['id_user']);
 $last_id_album=-1;
 $sql=mysql_query("SELECT id_photo, id_album FROM photoalbum_photos WHERE id_photo IN
-			(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user) ORDER BY id_album ASC, id_photo ASC");
-
-if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
-	header('Content-Type: text/html');
-else
-	header('Content-Type: application/xhtml+xml');
-echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head><title>Visualisation des photos d'un utilisateur</title></head>
-<body>
-<h1>Visualisation des photos de : $name</h1>
-<p>";
+			(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user) AND id_photo IN ($can_access) ORDER BY id_album ASC, id_photo ASC");
 while ($row = mysql_fetch_assoc($sql))
 {
 	$id_photo=$row['id_photo'];
 	$id_album=$row['id_album'];
-	if (can_access_photo($user['id_user'], $id_photo))
+	$albumtitle=$row['title'];
+	if($id_album!=$last_id_album)
 	{
-		if($id_album!=$last_id_album)
-		{
-			$last_id_album=$id_album;
-			$sql2 = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
-			$row2 = mysql_fetch_assoc($sql2);
-			$title = $row2['title'];
-			echo "</p>
-			<p><h2>$title</h2><br />";
-		}
+		if ($last_id_album!=-1)
+			echo "</album>";
+		$sql2 = mysql_query("SELECT a.title, u.name FROM photoalbum_albums AS a LEFT JOIN photoalbum_users AS u ON (a.id_owner=u.id_user) WHERE a.id_album=$id_album");
+		$row2 = mysql_fetch_assoc($sql2);
+		echo "<album><id>$id_album</id><title>$row2[title]</title><author>$row2[name]</author>";
+		$last_id_album=$id_album;
+	}
+	echo "<photo><id>$id_photo</id>";
 	$sql2 = mysql_query("SELECT COUNT(*) FROM photoalbum_comments WHERE id_photo=$id_photo");
 	$row2 = mysql_fetch_row($sql2);
-	if ($row2[0] <= 0) $text_comm="Pas de commentaire";
-	elseif($row2[0] == 1) $text_comm="1 commentaire";
-	else $text_comm= $row2[0]." commentaires";
-	echo "<a href='viewphoto.php?id_user=$id_user&amp;id_photo=$id_photo'><img src='photo.php?id_photo=$id_photo&amp;thumb=y' alt='$text_comm' title='$text_comm'/></a>&nbsp;";
-	}
+	echo "<nbcomments>$row2[0]</nbcomments><peoples>";
+	$whosin = select_whois_in_photo($id_photo);
+	$sql2 = mysql_query("SELECT id_user, name FROM photoalbum_users WHERE id_user IN ($whosin) ORDER BY name ASC");
+	while ($row2=mysql_fetch_assoc($sql2))
+		echo "<people><id>$row2[id_user]</id><name>$row2[name]</name></people>";
+	echo "</peoples></photo>";
 }
-echo "</p>";
-echo "<p>
-<a href='index.php'>Retour à l'accueil</a>
-</p>
-</body>
-</html>";
+if($id_last_album!=-1)
+	echo "</album>";
+echo "</body></photoalbum>";
+
 
 ?>

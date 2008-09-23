@@ -1,0 +1,10 @@
+div.container
+{
+position: relative;
+}
+div#rect
+{
+position: absolute;
+border: solid 2px red;
+visibility: hidden;
+}

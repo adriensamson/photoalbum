@@ -16,25 +16,15 @@ if (!isset($_REQUEST['action']))
 		$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/index.php';
 		header("Location: $url");
 	}
-	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
-		header('Content-Type: text/html');
-	else
-		header('Content-Type: application/xhtml+xml');
-	echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head><title>Invitation</title></head>
-<body>
-<h1>Invitation</h1>
-<form method='post' action='invite.php'>
-<p>
-Nom : <input name='name'/><br/>
-E-mail : <input name='email'/><br/>
-Message personnel :<br/>
-<textarea name='persmsg' cols='80' rows='10'></textarea><br/>
-<input type='hidden' name='action' value='invite'/>";
-	if (isset($_SERVER['HTTP_REFERER'])) echo "<input type='hidden' name='redirect' value='$_SERVER[HTTP_REFERER]'/>\n";
-	echo "<input type='submit' value='Inviter'/>
-</p></form></body></html>";
+	header('Content-Type: application/xml');
+	echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href='styles/invite.xsl' type='text/xsl'?>
+<photoalbum>
+	<login>$user[name]</login>
+	<title>Invitation</title>";
+	if (isset($_SERVER['HTTP_REFERER']))
+		echo "<redirect>$_SERVER[HTTP_REFERER]</redirect>";
+	echo "<body page='invite'/></photoalbum>";
 }
 elseif ($_REQUEST['action']=='invite')
 {
@@ -83,24 +73,15 @@ elseif ($_REQUEST['action']=='invited')
 	}
 	else
 	{
-		if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
-			header('Content-Type: text/html');
-		else
-			header('Content-Type: application/xhtml+xml');
-		echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head><title>Bienvenue</title></head>
-<body>
-<form method='post' action='invite.php'>
-<p>
-<input type='hidden' name='action' value='setpasswd'/>
-<input type='hidden' name='invite' value='$invite'/>
-Veuillez choisir un mot de passe : <input type='password' name='passwd'/><br/>
-Vérification : <input type='password' name='passwd2'/><br/>
-<input type='submit' value='Envoyer'/>
-</p>
-</form>
-</body></html>";
+		header('Content-Type: application/xml');
+	echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href='styles/invite.xsl' type='text/xsl'?>
+<photoalbum>
+	<title>Invité</title>
+	<body page='invited'>
+		<invite>$invite</invite>
+	</body>
+</photoalbum>";
 	}
 }
 elseif ($_REQUEST['action']=='setpasswd')

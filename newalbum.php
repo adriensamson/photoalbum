@@ -13,24 +13,17 @@ if ($user['id_user']==-1) exit("Not logged in");
 
 if (!isset($_REQUEST['action']))
 {
-	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
-		header('Content-Type: text/html');
-	else
-		header('Content-Type: application/xhtml+xml');
-	echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head><title>Création d'un album</title></head>
-<body>
-<h1>Création d'un album</h1>
-<form method='post' action='newalbum.php'>
-<p>
-Nom de l'album : <input name='title'/><br/>
-<input type='submit' value='Créer'/>
-<input type='hidden' name='action' value='create'/>
-</p>
-</form>
-</body>
-</html>";
+	header('Content-Type: application/xml');
+	echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href='styles/newalbum.xsl' type='text/xsl'?>
+<photoalbum>
+	<login>$user[name]</login>
+	<menuitem>
+		<title>Accueil</title>
+		<link>index.php</link>
+	</menuitem>
+	<title>Nouvel album</title>
+	<body page='newalbum'/></photoalbum>";
 }
 else
 {

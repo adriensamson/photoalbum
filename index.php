@@ -9,71 +9,48 @@
 include("common.php");
 $user = auth();
 $id_user=$user['id_user'];
-if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
-	header('Content-Type: text/html');
-else
-	header('Content-Type: application/xhtml+xml');
-echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head><title>Photoalbum</title></head>
-<body>
-<h1>Photoalbum</h1>";
 
-if ($user['id_user']==-1)
-	echo "<p><a href='login.php'>S'identifier</a></p>";
-else
+if($user['id_user']==-1)
+	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/login.php');
+
+header('Content-Type: application/xml');
+echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href='styles/index.xsl' type='text/xsl'?>
+<photoalbum>
+	<login>$user[name]</login>
+	<title>Accueil</title>
+	<menuitem>
+		<title>Accueil</title>
+		<link>index.php</link>
+	</menuitem>
+	<body page='index'>";
+
+$can_access=select_can_access_album($id_user);
+$sql=mysql_query("SELECT title, id_album, id_owner FROM photoalbum_albums WHERE id_album IN
+		($can_access) ORDER BY title ASC");
+while($row=mysql_fetch_assoc($sql))
 {
-	$sql=mysql_query("SELECT title, id_album FROM photoalbum_albums WHERE id_album IN
-			(SELECT p.id_album FROM photoalbum_photos AS p LEFT JOIN photoalbum_tags AS t ON t.id_photo=p.id_photo
-			WHERE t.id_user=$id_user) ORDER BY title ASC");
-	if (mysql_num_rows($sql)!=0)
-	{
-		echo "<p><strong>Albums où je suis :</strong><br/>";
-		while($row=mysql_fetch_assoc($sql))
-		{
-			$title=$row['title'];
-			$id_album=$row['id_album'];
-			echo "<a href='viewalbum.php?id_album=$id_album'>$title</a><br/>";
-		}
-		echo "</p>";
-	}
-	
-	$sql = mysql_query("SELECT title, id_album FROM photoalbum_albums WHERE id_owner=$id_user ORDER BY title ASC");
-	echo "<p><strong>Mes albums :</strong><br/>";
-	if (mysql_num_rows($sql)!=0)
-	{
-		while($row=mysql_fetch_assoc($sql))
-		{
-			$title=$row['title'];
-			$id_album=$row['id_album'];
-			echo "<a href='viewalbum.php?id_album=$id_album'>$title</a><br/>";
-		}
-	}
-	echo "</p>";
-	
-	$sql = mysql_query("SELECT id_user, name FROM photoalbum_users WHERE true ORDER BY name ASC");
-	echo "<form action='viewuser.php' method='get'>
-	<p><strong>Voir les photos de quelqu'un :</strong><br/>
-	<select name='id_user'>";
-	if (mysql_num_rows($sql)!=0)
-	{
-		while($row=mysql_fetch_assoc($sql))
-		{
-			$id_user=$row['id_user'];
-			$name=$row['name'];
-			echo "<option value='$id_user'>$name</option>";
-		}
-	}
-	echo "</select>
-	<input type='submit' name='Envoyer' value='OK' /></p></form>";
-	
-	echo "<p><a href='newalbum.php'>Créer un nouvel album</a></p>";
-
-	echo "<p><a href='login.php?action=logout'>Se déconnecter</a></p>";
+	$title=$row['title'];
+	$id_album=$row['id_album'];
+	$sql2 = mysql_query("SELECT name FROM photoalbum_users WHERE id_user=$row[id_owner]");
+	$row2 = mysql_fetch_assoc($sql2);
+	$author=$row2['name'];
+	$sql2 = mysql_query("SELECT COUNT(*) FROM photoalbum_photos WHERE id_album=$id_album");
+	$row2 = mysql_fetch_row($sql2);
+	$nbphotos=$row2[0];
+	$whois = select_whois_in_album($id_album);
+	$sql2 = mysql_query("SELECT id_user, name FROM photoalbum_users WHERE id_user IN ($whois) ORDER BY name ASC");
+	echo "<album>
+			<id>$id_album</id>
+			<name>$title</name>
+			<author>$author</author>
+			<nbphotos>$nbphotos</nbphotos>
+			<peoples>";
+	while ($row2=mysql_fetch_assoc($sql2))
+		echo "<people><id>$row2[id_user]</id><name>$row2[name]</name></people>";
+	echo "</peoples></album>";
 }
 
-echo "<p>En cas de bug, ou de demande d'amélioration, ça se passe sur <a href='http://redmine.kyklydse.com/projects/show/photoalbum'>Redmine</a>.</p>
-</body>
-</html>";
+echo "</body></photoalbum>";
 
 ?>

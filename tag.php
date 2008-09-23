@@ -16,49 +16,43 @@ if ($user['id_user']==-1)
 if (!isset($_REQUEST['action']))
 {
 	$id_photo=intval($_REQUEST['id_photo']);
-	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
-		header('Content-Type: text/html');
-	else
-		header('Content-Type: application/xhtml+xml');
-	$sql = mysql_query("SELECT imgw FROM photoalbum_photos WHERE id_photo = $id_photo");
-	$row = mysql_fetch_assoc($sql);
-	$imgw = $row['imgw'];
+	$sql=mysql_query("SELECT a.id_album, a.title FROM photoalbum_photos AS p LEFT JOIN photoalbum_albums AS a ON (a.id_album=p.id_album) WHERE p.id_photo=$id_photo");
+	$row=mysql_fetch_assoc($sql);
+	$id_album=$row['id_album'];
+	$albumtitle=$row['title'];
 	$sql = mysql_query("SELECT name, id_user FROM photoalbum_users ORDER BY name ASC");
 	$options = array();
 	while ($row=mysql_fetch_assoc($sql))
 		$options[$row['id_user']]=$row['name'];
-	echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head>
-<title>Tag</title>
-<script type='text/javascript'>
-var imgw = $imgw;
-</script>
-<script type='text/javascript' src='tag.js'></script>
-</head>
-<body onload='resize();'>
-<h1>Tag</h1>
-<p>Un premier clic pour le coin en haut à gauche, un deuxième pour le coin en bas à droite et les suivants pour redimensioner.<br/>
-</p>
-<form method='post' action='tag.php'>
-<p>
-<img id='photo' src='photo.php?id_photo=$id_photo' alt='image' onclick='clicked(event)'/><br/>
-Nom : <select name='id_user'>";
+	header('Content-Type: application/xml');
+	echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href='styles/tag.xsl' type='text/xsl'?>
+<photoalbum>
+	<login>$user[name]</login>
+	<title>$albumtitle - Tag</title>
+	<idphoto>$id_photo</idphoto>
+	<menuitem>
+		<title>Accueil</title>
+		<link>index.php</link>
+	</menuitem>
+	<menuitem>
+		<title>$albumtitle</title>
+		<link>viewalbum.php?id_album=$id_album</link>
+	</menuitem>
+	<menuitem>
+		<title>Photo</title>
+		<link>viewphoto.php?id_photo=$id_photo</link>
+	</menuitem>
+	<menuitem>
+		<title>Inviter quelqu'un</title>
+		<link>invite.php</link>
+	</menuitem>
+	<body page='tag'><peoplelist>";
 
 	foreach($options as $id_user => $name)
-		echo "<option value='$id_user'>$name</option>\n";
+		echo "<people><id>$id_user</id><name>$name</name></people>";
 
-	echo "</select><a href='invite.php'> Ajouter quelqu'un</a><br/>
-<input id='x' type='hidden' name='x'/>
-<input id='y' type='hidden' name='y'/>
-<input id='height' type='hidden' name='height'/>
-<input id='width' type='hidden' name='width'/>
-<input type='hidden' name='id_photo' value='$id_photo'/>
-<input type='hidden' name='action' value='tag'/>
-<input type='submit' value='Taguer'/>
-</p>
-<div id='rect' onclick='clicked(event)' ondblclick='resize();'/>
-</form></body></html>";
+	echo "</peoplelist></body></photoalbum>";
 }
 elseif ($_REQUEST['action']=='tag')
 {

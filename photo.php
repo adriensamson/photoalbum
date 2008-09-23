@@ -8,7 +8,15 @@
 
 include("common.php");
 $user = auth();
-$id_photo = intval($_REQUEST['id_photo']);
+if (isset($_REQUEST['id_album']))
+{
+	$id_album = intval($_REQUEST['id_album']);
+	$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE id_album=$id_album LIMIT 1");
+	$row=mysql_fetch_assoc($sql);
+	$id_photo = $row['id_photo'];
+}
+if (isset($_REQUEST['id_photo']))
+	$id_photo = intval($_REQUEST['id_photo']);
 if (isset($_REQUEST['thumb']))
 	$dir = $thumbdir;
 elseif (isset($_REQUEST['fullsize']))

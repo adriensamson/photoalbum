@@ -1,0 +1,28 @@
+div.photo
+{
+float: left;
+padding: 1em;
+height: 100px;
+}
+div.photo img
+{
+float: left;
+border: none;
+}
+div.legend
+{
+display: none;
+position: absolute;
+max-width: 300px;
+background-color: silver;
+font-size: 0.6em;
+}
+div.albumheader
+{
+clear: both;
+}
+span.author
+{
+color: gray;
+font-style: italic;
+}

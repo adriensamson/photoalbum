@@ -1,0 +1,39 @@
+span.legend
+{
+background-color: silver;
+color: black;
+font-size: 0.7em;
+}
+div.commentbox
+{
+margin: 1em;
+}
+div.comment
+{
+border: solid 1px black;
+border-collapse: collapse;
+}
+div.commentinput
+{
+margin: 1em;
+}
+span.writer
+{
+font-style: italic;
+color: gray;
+}
+div.container
+{
+position: relative;
+}
+div.cadrecont
+{
+position: absolute;
+}
+div.cadre
+{
+border: solid 2px red;
+visibility: hidden;
+height: 100%;
+width: 100%;
+}

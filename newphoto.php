@@ -21,34 +21,28 @@ if(!isset($_REQUEST['action']))
 	$row = mysql_fetch_assoc($sql);
 	$title=$row['title'];
 	
-	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
-		header('Content-Type: text/html');
-	else
-		header('Content-Type: application/xhtml+xml');
-	echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head><title>Ajout d'une photo</title></head>
-<body>
-<h1>Ajout d'une photo à l'album : $title</h1>
-<p>
-<a href='viewalbum.php?id_album=$id_album'>Visionner l'album</a>
-</p>
-<form method='post' action='upload.php' enctype='multipart/form-data'>
-<p>
-<input name='photo' type='file'/><br/>
-<input type='hidden' name='id_album' value='$id_album'/>
-<input type='hidden' name='action' value='upload'/>
-<input type='submit' value='Ajouter'/>
-</p></form>";
-	
+	header('Content-Type: application/xml');
+	echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href='styles/newphoto.xsl' type='text/xsl'?>
+<photoalbum>
+	<login>$user[name]</login>
+	<title>$title - Nouvelle photo</title>
+	<idalbum>$id_album</idalbum>
+	<menuitem>
+		<title>Accueil</title>
+		<link>index.php</link>
+	</menuitem>
+	<menuitem>
+		<title>$title</title>
+		<link>viewalbum.php?id_album=$id_album</link>
+	</menuitem>
+	<body page='newphoto'/>";
 	if(isset($_REQUEST['last']))
 	{
 		$id_last = $_REQUEST['last'];
-		echo "<p>Dernière photo envoyée :<br /><a href='viewphoto.php?id_photo=$id_last'><img src='photo.php?thumb=y&amp;id_photo=$id_last' alt='dernière photo'/></a></p>";
+		echo "<lastphoto>$id_last</lastphoto>";
 	}
-
-	echo "</body>
-</html>";
+	echo "</photoalbum>";
 }
 else
 {
@@ -60,9 +54,8 @@ else
 	move_uploaded_file($_FILES['photo']['tmp_name'],$uploaddir.$filename);
 	$image = new Imagick($uploaddir.$filename);
 	$imgw = $image->getImageWidth();
-	
-	system("convert $uploaddir$filename -thumbnail 100x100 $thumbdir$filename &");
-	system("convert $uploaddir$filename -resize 800x800 $photodir$filename &");
+	$image->thumbnailImage(100,100,true);
+	$image->writeImage($thumbdir.$filename);
 	
 	$filename = mysql_real_escape_string($filename);
 	mysql_query("INSERT INTO photoalbum_photos (filename, id_album, imgw) VALUES ('$filename', $id_album, $imgw)");

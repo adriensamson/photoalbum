@@ -1,0 +1,80 @@
+*
+{
+margin: auto;
+}
+a
+{
+text-decoration: none;
+color: teal;
+}
+a:hover
+{
+text-decoration: underline;
+}
+div.header
+{
+width: 900px;
+border: solid 5px navy;
+background-color: navy;
+color: white;
+}
+div.header a
+{
+color: white;
+}
+div.header a
+{
+text-decoration: none;
+}
+div.title
+{
+width: 100%;
+font-size: 3em;
+}
+div.login
+{
+float: right;
+}
+div.menu
+{
+text-align: center;
+position: relative;
+}
+.menuitem
+{
+display: inline;
+padding: 0px 6px;
+background-color: blue;
+text-align: center;
+font-weight: bold;
+margin: 0px 3px;
+}
+.menuitem:hover
+{
+background-color: teal;
+}
+.prev
+{
+position: absolute;
+left: 0px;
+}
+.next
+{
+position: absolute;
+right: 0px;
+}
+div.body
+{
+width: 894px;
+min-height: 400px;
+padding: 3px;
+border: solid 5px navy;
+border-top: none;
+background-color: white;
+color: black;
+}
+hr.spacer
+{
+clear: both;
+visibility: hidden;
+}

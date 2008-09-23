@@ -15,38 +15,44 @@ $sql = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album
 $row = mysql_fetch_assoc($sql);
 $title = $row['title'];
 $sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE id_album=$id_album ORDER BY id_photo ASC");
-if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
-	header('Content-Type: text/html');
-else
-	header('Content-Type: application/xhtml+xml');
-echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head><title>Visualisation d'un album</title></head>
-<body>
-<h1>Visualisation d'un album : $title</h1>
-<p>";
+
+header('Content-Type: application/xml');
+echo "<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href='styles/viewalbum.xsl' type='text/xsl'?>
+<photoalbum>
+	<login>$user[name]</login>
+	<title>$title</title>
+	<idalbum>$id_album</idalbum>
+	<menuitem>
+		<title>Accueil</title>
+		<link>index.php</link>
+	</menuitem>
+	<menuitem>
+		<title>$title</title>
+		<link>viewalbum.php?id_album=$id_album</link>
+	</menuitem>";
+
+if (is_owner($user['id_user'], $id_album))
+	echo "<owner/>";
+
+echo "<body page='viewalbum'>";
+
 while ($row = mysql_fetch_assoc($sql))
 {
 	$id_photo=$row['id_photo'];
 	$sql2 = mysql_query("SELECT COUNT(*) FROM photoalbum_comments WHERE id_photo=$id_photo");
 	$row2 = mysql_fetch_row($sql2);
-	if ($row2[0] <= 0) $text_comm="Pas de commentaire";
-	elseif($row2[0] == 1) $text_comm="1 commentaire";
-	else $text_comm= $row2[0]." commentaires";
-	echo "<a href='viewphoto.php?id_photo=$id_photo'><img src='photo.php?id_photo=$id_photo&amp;thumb=y' alt='$text_comm' title='$text_comm'/></a>&nbsp;";
+	$nbcomments = $row2[0];
+	$whois = select_whois_in_photo($id_photo);
+	$sql2 = mysql_query("SELECT id_user, name FROM photoalbum_users WHERE id_user IN ($whois) ORDER BY name ASC");
+	echo "<photo>
+		<id>$id_photo</id>
+		<nbcomments>$nbcomments</nbcomments>
+		<peoples>";
+	while ($row2=mysql_fetch_assoc($sql2))
+		echo "<people><id>$row2[id_user]</id><name>$row2[name]</name></people>";
+	echo "</peoples></photo>";
 }
-echo "</p>";
-if (is_owner($user['id_user'], $id_album))
-	echo "<p><a href='upload.php?id_album=$id_album'>Ajouter une photo</a></p>";
-
-echo "<p>
-<a href='zipalbum.php?id_album=$id_album'>Télécharger l'album</a>
-</p>";
-
-echo "<p>
-<a href='index.php'>Retour à l'accueil</a>
-</p>
-</body>
-</html>";
+echo "</body></photoalbum>";
 
 ?>

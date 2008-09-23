@@ -29,37 +29,55 @@ function auth()
 	return array("id_user" => -1, 'name' => "Anonymous");
 }
 
+function select_is_owner_album($id_user)
+{
+	return "SELECT id_album FROM photoalbum_albums WHERE id_owner=$id_user";
+}
+function select_is_owner_photo($id_user)
+{
+	$subsql = select_is_owner_album($id_user);
+	return "SELECT id_photo FROM photoalbum_photos WHERE id_album IN ($subsql)";
+}
+function select_can_access_album($id_user)
+{
+	$is_owner = select_is_owner_album($id_user);
+	return "SELECT id_album FROM photoalbum_albums WHERE (id_album IN ($is_owner) OR id_album IN
+		(SELECT id_album FROM photoalbum_photos WHERE id_photo IN
+		(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user)))";
+}
+function select_can_access_photo($id_user)
+{
+	$subsql = select_can_access_album($id_user);
+	return "SELECT id_photo FROM photoalbum_photos WHERE id_album IN ($subsql)";
+}
+function select_whois_in_photo($id_photo)
+{
+	return "SELECT id_user FROM photoalbum_tags WHERE id_photo = $id_photo";
+}
+function select_whois_in_album($id_album)
+{
+	return "SELECT id_user FROM photoalbum_tags WHERE id_photo IN
+		(SELECT id_photo FROM photoalbum_photos WHERE id_album=$id_album)";
+}
+
 function can_access_photo($id_user, $id_photo)
 {
-	$sql = mysql_query("SELECT COUNT(*) FROM photoalbum_photos WHERE id_photo=$id_photo AND id_album IN
-		(SELECT id_album FROM photoalbum_albums WHERE id_owner=$id_user)");
-	$result = mysql_fetch_row($sql);
-	if ($result[0] != 0) return true;
-	$sql = mysql_query("SELECT COUNT(*) FROM photoalbum_photos WHERE id_photo=$id_photo AND id_album IN
-		(SELECT id_album FROM photoalbum_photos WHERE id_photo IN
-		(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user))");
-	$result = mysql_fetch_row($sql);
-	if ($result[0] != 0) return true;
+	$sql = mysql_query(select_can_access_photo($id_user)." AND id_photo=$id_photo");
+	if (mysql_num_rows($sql) != 0) return true;
 	else return false;
 }
 
 function is_owner($id_user, $id_album)
 {
-	$sql = mysql_query("SELECT COUNT(*) FROM photoalbum_albums AS a WHERE a.id_owner=$id_user AND a.id_album = $id_album");
-	$result = mysql_fetch_row($sql);
-	if ($result[0] != 0) return true;
+	$sql = mysql_query(select_is_owner_album($id_user)." AND id_album = $id_album");
+	if (mysql_num_rows($sql) != 0) return true;
+	else return false;
 }
 
 function can_access_album($id_user, $id_album)
 {
-	$sql = mysql_query("SELECT COUNT(*) FROM photoalbum_albums AS a WHERE a.id_album=$id_album AND a.id_owner=$id_user");
-	$result = mysql_fetch_row($sql);
-	if ($result[0] != 0) return true;
-	$sql = mysql_query("SELECT COUNT(*) FROM photoalbum_albums WHERE id_album=$id_album AND id_album IN
-		(SELECT id_album FROM photoalbum_photos WHERE id_photo IN
-		(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user))");
-	$result = mysql_fetch_row($sql);
-	if ($result[0] != 0) return true;
+	$sql = mysql_query(select_can_access_album($id_user)." AND id_album=$id_album");
+	if (mysql_num_rows($sql) != 0) return true;
 	else return false;
 }
 
