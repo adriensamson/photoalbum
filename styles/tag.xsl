@@ -23,7 +23,7 @@
 			<input id="y" type="hidden" name="y"/>
 			<input id="height" type="hidden" name="height"/>
 			<input id="width" type="hidden" name="width"/>
-			<input type="hidden" name="id_photo" value="$id_photo"/>
+			<input type="hidden" name="id_photo" value="{/photoalbum/idphoto}"/>
 			<input type="hidden" name="action" value="tag"/>
 			<input type="submit" value="Taguer"/>
 		</p>
