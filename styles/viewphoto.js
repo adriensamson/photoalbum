@@ -1,6 +1,6 @@
 function affcadre(num)
 {
-	var i=0;
+	var i=1;
 	while (document.getElementById('cadre'+i))
 	{	
 		document.getElementById('cadre'+i).style.visibility='hidden';
