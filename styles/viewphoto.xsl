@@ -8,7 +8,7 @@
 
 <xsl:template name="headers">
 	<link href="styles/viewphoto.css" rel="stylesheet" type="text/css"/>
-	<script src="styles/viewphoto.js" type="text/javascript"/>
+	<script src="styles/viewphoto.js" type="text/javascript"></script>
 	<style type="text/css">
 		<xsl:call-template name="cadrestyle"/>
 	</style>

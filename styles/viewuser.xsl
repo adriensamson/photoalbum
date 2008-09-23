@@ -8,7 +8,7 @@
 
 <xsl:template name="headers">
 	<link href="styles/viewuser.css" rel="stylesheet" type="text/css"/>
-	<script src="styles/viewuser.js" type="text/javascript"/>
+	<script src="styles/viewuser.js" type="text/javascript"></script>
 </xsl:template>
 
 <xsl:template match="body[@page='viewuser']">

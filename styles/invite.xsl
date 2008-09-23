@@ -14,7 +14,7 @@
 			Nom : <input name="name"/><br/>
 			E-mail : <input name="email"/><br/>
 			Message personnel :<br/>
-			<textarea name="persmsg" cols="80" rows="10"/><br/>
+			<textarea name="persmsg" cols="80" rows="10"></textarea><br/>
 			<input type="hidden" name="action" value="invite"/>
 			<xsl:call-template name="redirect"/>
 			<input type="submit" value="Inviter"/>
