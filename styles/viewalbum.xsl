@@ -19,7 +19,7 @@
 <xsl:template match="photo">
 	<div class="photo">
 		<xsl:if test="changed">
-			<xsl:attribute name="class">album changed</xsl:attribute>
+			<xsl:attribute name="class">photo changed</xsl:attribute>
 		</xsl:if>
 		<a href="viewphoto.php?id_photo={id}">
 			<img src="photo_thumb_{id}.jpg" onmouseover="showlegend({id})" onmouseout="hidelegend({id})"/>
