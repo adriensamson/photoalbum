@@ -100,7 +100,7 @@ function get_unseen($id_user, $album = false)
 	if(!$album)
 		$sql = mysql_query("SELECT id_photo FROM photoalbum_unseen_changes WHERE id_user=$id_user");
 	else
-		$sql = mysql_query("SELECT p.id_album FROM photoalbum_unseen_changes AS c LEFT JOIN photoalbum_photos AS p ON (c.id_photo = p.id_photo) WHERE c.id_user=$id_user)");
+		$sql = mysql_query("SELECT p.id_album FROM photoalbum_unseen_changes AS c LEFT JOIN photoalbum_photos AS p ON (c.id_photo = p.id_photo) WHERE c.id_user=$id_user");
 	while($row = mysql_fetch_row($sql))
 	{
 		$unseen[$row[0]]=true;
