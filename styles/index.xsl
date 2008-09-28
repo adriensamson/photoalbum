@@ -17,6 +17,9 @@
 
 <xsl:template match="album">
 	<div class="album">
+		<xsl:if test="changed">
+			<xsl:attribute name="class">album changed</xsl:attribute>
+		</xsl:if>
 		<a href="viewalbum.php?id_album={id}"><img src="photo_album_{id}.jpg"/></a><strong><xsl:value-of select="name"/></strong>
 		<span class="author"> de <xsl:value-of select="author"/></span>,
 		<span class="nbphotos"><xsl:value-of select="nbphotos"/> photos.</span><br/>

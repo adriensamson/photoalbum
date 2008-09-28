@@ -9,6 +9,7 @@
 include("common.php");
 $user = auth();
 $id_photo = intval($_REQUEST['id_photo']);
+set_seen($user['id_user'], $id_photo);
 if (intval($_REQUEST['id_user'])>0)
 {
 	$id_user = intval($_REQUEST['id_user']);

@@ -9,10 +9,10 @@
 include("common.php");
 $user = auth();
 $id_user=$user['id_user'];
-
 if($user['id_user']==-1)
 	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/login.php');
 
+$unseen = get_unseen($user['id_user'], true);
 header('Content-Type: application/xml');
 echo "<?xml version='1.0' encoding='UTF-8'?>
 <?xml-stylesheet href='styles/index.xsl' type='text/xsl'?>
@@ -44,8 +44,10 @@ while($row=mysql_fetch_assoc($sql))
 			<id>$id_album</id>
 			<name>$title</name>
 			<author>$author</author>
-			<nbphotos>$nbphotos</nbphotos>
-			<peoples>";
+			<nbphotos>$nbphotos</nbphotos>";
+	if (isset($unseen[$id_album]))
+		echo "<changed/>";
+	echo "<peoples>";
 	while ($row2=mysql_fetch_assoc($sql2))
 		echo "<people><id>$row2[id_user]</id><name>$row2[name]</name></people>";
 	echo "</peoples></album>";

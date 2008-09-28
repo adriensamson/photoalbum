@@ -4,3 +4,4 @@ CREATE TABLE photoalbum_photos (id_photo INT AUTO_INCREMENT PRIMARY KEY, filenam
 CREATE TABLE photoalbum_tags (id_tag INT AUTO_INCREMENT PRIMARY KEY, id_photo INT, id_user INT, x INT, y INT, width INT, height INT, id_tager INT);
 CREATE TABLE photoalbum_comments (id_comment INT AUTO_INCREMENT PRIMARY KEY, id_photo INT, id_user INT, comment TEXT);
 CREATE TABLE photoalbum_logs(id_log INT AUTO_INCREMENT PRIMARY KEY, logtime DATETIME, id_user INT, id_album INT, log TEXT);
+CREATE TABLE photoalbum_unseen_changes (id_user INT, id_photo INT);

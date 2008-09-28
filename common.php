@@ -81,6 +81,38 @@ function can_access_album($id_user, $id_album)
 	else return false;
 }
 
+function get_unseen($id_user, $album = false)
+{
+	if ($id_user==-1)
+		return array();
+	$sql = mysql_query("SELECT lastvisit FROM photoalbum_users WHERE id_user=$id_user");
+	$row = mysql_fetch_row($sql);
+	$lastvisit = $row[0];
+	$canaccess = select_can_access_photo($id_user);
+	$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE id_photo IN ($canaccess) AND lastchanged > $lastvisit");
+	while($row = mysql_fetch_row($sql))
+	{
+		mysql_query("INSERT INTO photoalbum_unseen_changes (id_user, id_photo) VALUES ($id_user, $row[0])");
+	}
+	$now = time();
+	mysql_query("UPDATE photoalbum_users SET lastvisit = $now WHERE id_user=$id_user");
+	$unseen = array();
+	if(!$album)
+		$sql = mysql_query("SELECT id_photo FROM photoalbum_unseen_changes WHERE id_user=$id_user");
+	else
+		$sql = mysql_query("SELECT p.id_album FROM photoalbum_unseen_changes AS c LEFT JOIN photoalbum_photos AS p ON (c.id_photo = p.id_photo) WHERE c.id_user=$id_user)");
+	while($row = mysql_fetch_row($sql))
+	{
+		$unseen[$row[0]]=true;
+	}
+}
+
+function set_seen($id_user, $id_photo)
+{
+	if ($id_user != -1)
+		mysql_query("DELETE FROM photoalbum_unseen_changes WHER id_user=$id_user AND id_photo=$id_photo");
+}
+
 function log_newalbum($id_user, $username, $id_album)
 {
 	$date = date('Y-m-d H:i:s');

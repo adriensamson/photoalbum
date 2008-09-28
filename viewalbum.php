@@ -11,6 +11,7 @@ $user = auth();
 $id_album = intval($_REQUEST['id_album']);
 if (!can_access_album($user['id_user'], $id_album))
 	exit("Not authorized");
+$unseen = get_unseen($user['id_user']);
 $sql = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
 $row = mysql_fetch_assoc($sql);
 $title = $row['title'];
@@ -47,8 +48,10 @@ while ($row = mysql_fetch_assoc($sql))
 	$sql2 = mysql_query("SELECT id_user, name FROM photoalbum_users WHERE id_user IN ($whois) ORDER BY name ASC");
 	echo "<photo>
 		<id>$id_photo</id>
-		<nbcomments>$nbcomments</nbcomments>
-		<peoples>";
+		<nbcomments>$nbcomments</nbcomments>";
+	if (isset($unseen[$id_photo]))
+		echo "<changed/>";	
+	echo "<peoples>";
 	while ($row2=mysql_fetch_assoc($sql2))
 		echo "<people><id>$row2[id_user]</id><name>$row2[name]</name></people>";
 	echo "</peoples></photo>";
