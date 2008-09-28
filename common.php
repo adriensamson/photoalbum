@@ -105,6 +105,7 @@ function get_unseen($id_user, $album = false)
 	{
 		$unseen[$row[0]]=true;
 	}
+	return $unseen;
 }
 
 function set_seen($id_user, $id_photo)
