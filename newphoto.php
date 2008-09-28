@@ -52,13 +52,11 @@ else
 	if(mysql_num_rows($sql)==0) exit("Not your album");
 	$filename = $id_album . '/' . basename($_FILES['photo']['name']);
 	move_uploaded_file($_FILES['photo']['tmp_name'],$uploaddir.$filename);
-	$image = new Imagick($uploaddir.$filename);
-	$imgw = $image->getImageWidth();
-	$image->thumbnailImage(100,100,true);
-	$image->writeImage($thumbdir.$filename);
-	
+	system("convert $uploaddir$filename -thumbnail 100x100 $thumbdir$filename &");
+	system("convert $uploaddir$filename -resize 800x800 $photodir$filename &");
 	$filename = mysql_real_escape_string($filename);
-	mysql_query("INSERT INTO photoalbum_photos (filename, id_album, imgw) VALUES ('$filename', $id_album, $imgw)");
+	$now = time();
+	mysql_query("INSERT INTO photoalbum_photos (filename, id_album, lastchanged) VALUES ('$filename', $id_album, $now)");
 	$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE filename='$filename' AND id_album=$id_album");
 	$row = mysql_fetch_assoc($sql);
 	$id_photo = $row['id_photo'];
