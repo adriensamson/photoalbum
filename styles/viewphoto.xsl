@@ -69,7 +69,7 @@ height: <xsl:value-of select="@h"/>px;
 		<div class="commentinput">
 			Ajouter un commentaire :<br/>
 			<textarea cols="80" rows="5" name="comment"></textarea><br/>
-			<input type="hidden" name="id_photo" value="$id_photo"/>
+			<input type="hidden" name="id_photo" value="{/photoalbum/idphoto}"/>
 			<input type="submit" value="Envoyer"/>
 		</div>
 	</form>
