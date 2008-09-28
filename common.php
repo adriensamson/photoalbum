@@ -89,7 +89,7 @@ function get_unseen($id_user, $album = false)
 	$row = mysql_fetch_row($sql);
 	$lastvisit = $row[0];
 	$canaccess = select_can_access_photo($id_user);
-	$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE id_photo IN ($canaccess) AND lastchanged > $lastvisit");
+	$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE lastchanged > $lastvisit AND id_photo IN ($canaccess)");
 	while($row = mysql_fetch_row($sql))
 	{
 		mysql_query("INSERT INTO photoalbum_unseen_changes (id_user, id_photo) VALUES ($id_user, $row[0])");

@@ -19,7 +19,7 @@ if ($user['id_user']==-1 || !can_access_photo($id_user, $id_photo))
 
 mysql_query("INSERT INTO photoalbum_comments (id_user, id_photo, comment) VALUES ($id_user, $id_photo, '$comment')");
 $now = time();
-mysql_query("UPDATE photoalbum_photos SET lastchanged=$now");
+mysql_query("UPDATE photoalbum_photos SET lastchanged=$now WHERE id_photo = $id_photo");
 $sql = mysql_query("SELECT id_album FROM photoalbum_albums WHERE id_album IN (SELECT id_album FROM photoalbum_photos WHERE id_photo=$id_photo)");
 $row = mysql_fetch_assoc($sql);
 log_newcomment($user['id_user'], $user['name'], $row['id_album'], $id_photo);
