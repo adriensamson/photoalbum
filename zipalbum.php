@@ -21,6 +21,7 @@ $sql = mysql_query("SELECT filename FROM photoalbum_photos WHERE id_album=$id_al
 exec("cd $uploaddir; zip -r0 $id_album $id_album");
 
 header("Content-Type: application/zip");
+header("Content-Length: ".filesize("$uploaddir$id_album.zip"));
 readfile("$uploaddir$id_album.zip");
 
 exec("rm $id_album.zip"); 
