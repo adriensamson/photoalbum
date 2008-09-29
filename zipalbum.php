@@ -18,10 +18,11 @@ $sql = mysql_query("SELECT filename FROM photoalbum_photos WHERE id_album=$id_al
     	
 
 //Création du fichier zip temporaire
+$file = realpath("$uploaddir$id_album.zip");
 function onexit()
 {
-	global $uploaddir, $id_album;
-	exec("cd $uploaddir; rm $id_album.zip");
+	global $file;
+	unlink($file);
 }
 register_shutdown_function('onexit');
 exec("cd $uploaddir; zip -r0 $id_album $id_album");
