@@ -31,6 +31,10 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 	<menuitem>
 		<title>$title</title>
 		<link>viewalbum.php?id_album=$id_album</link>
+	</menuitem>
+	<menuitem>
+		<title>Archive ZIP</title>
+		<link>album_$id_album.zip</link>
 	</menuitem>";
 
 if (is_owner($user['id_user'], $id_album))

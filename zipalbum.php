@@ -31,6 +31,4 @@ header("Content-Type: application/zip");
 header("Content-Length: ".filesize("$uploaddir$id_album.zip"));
 readfile("$uploaddir$id_album.zip");
 
-
-
 ?>
