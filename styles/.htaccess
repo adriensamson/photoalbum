@@ -1,3 +1,4 @@
+RewriteEngine On
 RewriteCond %{HTTP_USER_AGENT} MSIE
-RewriteRule tag.js tag-ie.js
+RewriteRule tag.js tag-ie.js [L]
 
