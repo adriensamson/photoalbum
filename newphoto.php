@@ -52,8 +52,8 @@ else
 	if(mysql_num_rows($sql)==0) exit("Not your album");
 	$filename = $id_album . '/' . basename($_FILES['photo']['name']);
 	move_uploaded_file($_FILES['photo']['tmp_name'],$uploaddir.$filename);
-	system("convert $uploaddir$filename -thumbnail 100x100 $thumbdir$filename &");
-	system("convert $uploaddir$filename -resize 800x800 $photodir$filename &");
+	system('convert '.escapeshellarg($uploaddir.$filename).' -thumbnail 100x100 '.escapeshellarg($thumbdir.$filename).' &');
+	system('convert '.escapeshellarg($uploaddir.$filename).' -resize 800x800 '.escapeshellarg($photodir.$filename).' &');
 	$filename = mysql_real_escape_string($filename);
 	$now = time();
 	mysql_query("INSERT INTO photoalbum_photos (filename, id_album, lastchanged) VALUES ('$filename', $id_album, $now)");
