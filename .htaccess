@@ -6,3 +6,5 @@ RewriteRule ^photo_([0-9]+)\.jpg$	photo.php?id_photo=$1
 RewriteRule ^photo_fullsize_([0-9]+)\.jpg$	photo.php?id_photo=$1&fullsize=y
 RewriteRule ^photo_thumb_([0-9]+)\.jpg$	photo.php?id_photo=$1&thumb=y
 RewriteRule ^photo_album_([0-9]+)\.jpg$	photo.php?id_album=$1&thumb=y
+
+RewriteRule ^album_([0-9]+)\.zip$ zipalbum.php?id_album=$1

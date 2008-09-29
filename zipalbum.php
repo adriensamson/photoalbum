@@ -18,28 +18,11 @@ $sql = mysql_query("SELECT filename FROM photoalbum_photos WHERE id_album=$id_al
     	
 
 //Création du fichier zip temporaire
-$file = tempnam("tmp", "zip");
-   
-$zip = new ZipArchive();
+system("cd $uploaddir; zip -r0 $id_album $id_album");
 
-// Zip will open and overwrite the file, rather than try to read it.
-$zip->open($file, ZipArchive::OVERWRITE);
-
-    	$zip->addFromString('Album.txt', $title);
-    	
-while ($row = mysql_fetch_assoc($sql))
-{
-	$filename=$row['filename'];
-	$zip->addFile('files/'.$filename, substr(strrchr($filename, "/"), 1 ));
-	//echo 'files/'.$filename;
-}
-$zip->close();
-// Stream the file to the client
 header("Content-Type: application/zip");
-header("Content-Length: " . filesize($file));
-header("Content-Disposition: attachment; filename=\"Album_".$id_album.".zip\"");
-readfile($file);
+readfile("$uploaddir$id_album.zip");
 
-unlink($file); 
+system("rm $id_album.zip"); 
 
 ?>
