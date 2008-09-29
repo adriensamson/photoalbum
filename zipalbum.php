@@ -18,7 +18,11 @@ $sql = mysql_query("SELECT filename FROM photoalbum_photos WHERE id_album=$id_al
     	
 
 //Création du fichier zip temporaire
-function onexit() {exec("cd $uploaddir; rm $id_album.zip");}
+function onexit()
+{
+	global $uploaddir, $id_album;
+	exec("cd $uploaddir; rm $id_album.zip");
+}
 register_shutdown_function('onexit');
 exec("cd $uploaddir; zip -r0 $id_album $id_album");
 
