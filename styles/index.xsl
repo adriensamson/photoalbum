@@ -24,6 +24,7 @@
 		<span class="author"> de <xsl:value-of select="author"/></span>,
 		<span class="nbphotos"><xsl:value-of select="nbphotos"/> photos.</span><br/>
 		<span class="people">Avec : <xsl:apply-templates select="peoples/people"/></span>
+		<hr class="spacer"/>
 	</div>
 </xsl:template>
 
