@@ -10,7 +10,7 @@
 
 <xsl:template match="body[@page='newphoto']">
 	<xsl:call-template name="lastphoto"/>
-	<form method="post" action="upload.php" enctype="multipart/form-data">
+	<form method="post" action="newphoto.php" enctype="multipart/form-data">
 		<p>
 			<input name="photo" type="file"/><br/>
 			<input type="hidden" name="id_album" value="{/photoalbum/idalbum}"/>
