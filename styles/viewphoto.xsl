@@ -24,7 +24,7 @@
 </xsl:template>
 
 <xsl:template match="cadre">
-	<div class="cadrecont" id="cadrecont{position()}" onmouseover="affcadre({position()})" onmouseout="affcadre(-1)">
+	<div class="cadrecont" id="cadrecont{position()}" onmouseover="affcadre({position()})" onmouseout="affcadre(-{position()})">
 		<div class="cadre" id="cadre{position()}">
 			<span class="legend"><xsl:value-of select="people/name"/></span>
 		</div>
@@ -47,7 +47,7 @@ height: <xsl:value-of select="@h"/>px;
 	<xsl:if test="/photoalbum/body/cadre">
 		<p>Sur cette photo : 
 		<xsl:for-each select="/photoalbum/body/cadre">
-			<a href="viewuser.php?id_user={people/id}" onmouseover="affcadre({position()})" onmouseout="affcadre(-1)"><xsl:value-of select="people/name"/></a>
+			<a href="viewuser.php?id_user={people/id}" onmouseover="affcadre(0); affcadre({position()})" onmouseout="affcadre(0)"><xsl:value-of select="people/name"/></a>
 			<xsl:if test="position()!=last()">, </xsl:if>
 		</xsl:for-each>.
 		</p>
