@@ -18,11 +18,11 @@ $sql = mysql_query("SELECT filename FROM photoalbum_photos WHERE id_album=$id_al
     	
 
 //Création du fichier zip temporaire
-system("cd $uploaddir; zip -r0 $id_album $id_album");
+exec("cd $uploaddir; zip -r0 $id_album $id_album");
 
 header("Content-Type: application/zip");
 readfile("$uploaddir$id_album.zip");
 
-system("rm $id_album.zip"); 
+exec("rm $id_album.zip"); 
 
 ?>
