@@ -44,6 +44,10 @@ echo "<menuitem>
 		<link>viewalbum.php?id_album=$id_album</link>
 	</menuitem>
 	<menuitem>
+		<title>Taille réelle</title>
+		<link>photo_fullsize_$id_photo.jpg</link>
+	</menuitem>
+	<menuitem>
 		<title>Taguer</title>
 		<link>tag.php?id_photo=$id_photo</link>
 	</menuitem>";
