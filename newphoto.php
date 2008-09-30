@@ -60,7 +60,6 @@ else
 	$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE filename='$filename' AND id_album=$id_album");
 	$row = mysql_fetch_assoc($sql);
 	$id_photo = $row['id_photo'];
-	log_newphoto($user['id_user'], $user['name'], $id_album, $id_photo);
 	$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']."?last=$id_photo&id_album=$id_album";
 	header("Location: $url");
 }

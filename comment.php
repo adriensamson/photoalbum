@@ -22,7 +22,6 @@ $now = time();
 mysql_query("UPDATE photoalbum_photos SET lastchanged=$now WHERE id_photo = $id_photo");
 $sql = mysql_query("SELECT id_album FROM photoalbum_albums WHERE id_album IN (SELECT id_album FROM photoalbum_photos WHERE id_photo=$id_photo)");
 $row = mysql_fetch_assoc($sql);
-log_newcomment($user['id_user'], $user['name'], $row['id_album'], $id_photo);
 $url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/viewphoto.php?id_photo=$id_photo";
 header("Location: $url");
 

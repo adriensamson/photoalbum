@@ -114,24 +114,4 @@ function set_seen($id_user, $id_photo)
 		mysql_query("DELETE FROM photoalbum_unseen_changes WHERE id_user=$id_user AND id_photo=$id_photo");
 }
 
-function log_newalbum($id_user, $username, $id_album)
-{
-	$date = date('Y-m-d H:i:s');
-	$log = mysql_real_escape_string("Création de l'album par $username");
-	mysql_query("INSERT INTO photoalbum_logs (logtime, id_user, id_album, log) VALUES ('$date', $id_user, $id_album, '$log')");
-}
-
-function log_newphoto($id_user, $username, $id_album, $id_photo)
-{
-	$date = date('Y-m-d H:i:s');
-	$log = mysql_real_escape_string("Nouvelle photo de $username");
-	mysql_query("INSERT INTO photoalbum_logs (logtime, id_user, id_album, id_photo, log) VALUES ('$date', $id_user, $id_album, $id_photo, '$log')");
-}
-
-function log_newcomment($id_user, $username, $id_album, $id_photo)
-{
-	$date = date('Y-m-d H:i:s');
-	$log = mysql_real_escape_string("Nouveau commentaire de $username");
-	mysql_query("INSERT INTO photoalbum_logs (logtime, id_user, id_album, id_photo, log) VALUES ('$date', $id_user, $id_album, $id_photo, '$log')");
-}
 ?>
