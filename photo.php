@@ -43,7 +43,7 @@ if (isset($headers['If-Modified-Since']))
 }
 
 header("Last-Modified: ".gmdate('r', $row['lastchanged']));
-header("Cache-Control: private");
+header("Pragma: no-cache");
 header("Content-Type: ".mime_content_type($filename));
 readfile($filename);
 
