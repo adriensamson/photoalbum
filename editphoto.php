@@ -8,7 +8,7 @@
 
 include("common.php");
 $user = auth();
-$id_photo = intval($_REQUEST['id_album']);
+$id_photo = intval($_REQUEST['id_photo']);
 $sql=mysql_query("SELECT a.id_album, a.title FROM photoalbum_photos AS p LEFT JOIN photoalbum_albums AS a ON (a.id_album=p.id_album) WHERE p.id_photo=$id_photo");
 $row=mysql_fetch_assoc($sql);
 $id_album=$row['id_album'];
@@ -84,6 +84,46 @@ elseif($_REQUEST['action']=='deletetag')
 {
 	mysql_query("DELETE FROM photoalbum_tags WHERE id_photo=$id_photo AND id_tag=$id_tag");
 	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/viewphoto.php?id_photo='.$id_photo);
+}
+elseif($_REQUEST['action']=='rotateleft')
+{
+	$sql = mysql_query("SELECT filename, id_album FROM photoalbum_photos WHERE id_photo=$row[id_photo]");
+	$row = mysql_fetch_assoc($sql);
+	$filename = $row['id_album'].'/'.$row['filename'];
+	$imagesize = getimagesize($photodir.$filename);
+	system('convert '.escapeshellarg($uploaddir.$filename).' -rotate -90 '.escapeshellarg($uploaddir.$filename).' &');
+	system('convert '.escapeshellarg($thumbdir.$filename).' -rotate -90 '.escapeshellarg($thumbdir.$filename).' &');
+	system('convert '.escapeshellarg($photodir.$filename).' -rotate -90 '.escapeshellarg($photodir.$filename).' &');
+	
+	$sql = mysql_query("SELECT id_tag, id_photo, x, y, width, height FROM photoalbum_tags WHERE id_photo=$id_photo");
+	while($row=mysql_fetch_assoc($sql))
+	{
+		$width = $row['height'];
+		$height = $row['width'];
+		$x = $row['y'];
+		$y = $imagesize[0] - $row['x'] - $row['width'];
+		mysql_query("UPDATE photoalbum_tags SET x=$x, y=$y, width=$width, height=$height WHERE id_tag=$row[id_tag]");		
+	}
+}
+elseif($_REQUEST['action']=='rotateright')
+{
+	$sql = mysql_query("SELECT filename, id_album FROM photoalbum_photos WHERE id_photo=$row[id_photo]");
+	$row = mysql_fetch_assoc($sql);
+	$filename = $row['id_album'].'/'.$row['filename'];
+	$imagesize = getimagesize($photodir.$filename);
+	system('convert '.escapeshellarg($uploaddir.$filename).' -rotate 90 '.escapeshellarg($uploaddir.$filename).' &');
+	system('convert '.escapeshellarg($thumbdir.$filename).' -rotate 90 '.escapeshellarg($thumbdir.$filename).' &');
+	system('convert '.escapeshellarg($photodir.$filename).' -rotate 90 '.escapeshellarg($photodir.$filename).' &');
+	
+	$sql = mysql_query("SELECT id_tag, id_photo, x, y, width, height FROM photoalbum_tags WHERE id_photo=$id_photo");
+	while($row=mysql_fetch_assoc($sql))
+	{
+		$width = $row['height'];
+		$height = $row['width'];
+		$x = $imagesize[1] - $row['y'] - $row['height'];
+		$y = $row['x'];
+		mysql_query("UPDATE photoalbum_tags SET x=$x, y=$y, width=$width, height=$height WHERE id_tag=$row[id_tag]");		
+	}
 }
 else
 	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/viewphoto.php?id_photo='.$id_photo);
