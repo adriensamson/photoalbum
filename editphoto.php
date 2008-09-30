@@ -83,6 +83,7 @@ elseif($_REQUEST['action']=='confdelete')
 }
 elseif($_REQUEST['action']=='deletetag')
 {
+	$id_tag=intval($_REQUEST['id_tag']);
 	mysql_query("DELETE FROM photoalbum_tags WHERE id_photo=$id_photo AND id_tag=$id_tag");
 	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/viewphoto.php?id_photo='.$id_photo);
 }

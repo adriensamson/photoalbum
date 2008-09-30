@@ -12,7 +12,7 @@
 	<p>
 		Liste des tags de cette photo :<br/>
 		<ul><xsl:for-each select="tag">
-			<li><xsl:value-of select="name"/> - <a href="editphoto.php?action=deletetag&amp;id_photo={/photoalbum/idphoto}&amp;id_tag={idtag}">
+			<li><xsl:value-of select="name"/> <a href="editphoto.php?action=deletetag&amp;id_photo={/photoalbum/idphoto}&amp;id_tag={idtag}">
 				<img src="icons/edit-delete.png" alt="Supprimer" title="Supprimer"/></a></li>
 		</xsl:for-each></ul>
 	</p>
