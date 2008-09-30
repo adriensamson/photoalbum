@@ -71,6 +71,7 @@ elseif($_REQUEST['action']=='delete')
 }
 elseif($_REQUEST['action']=='confdelete')
 {
+	mysql_query("DELETE FROM photoalbum_comments WHERE id_photo=$id_photo");
 	mysql_query("DELETE FROM photoalbum_tags WHERE id_photo=$id_photo");
 	$sql = mysql_query("SELECT filename FROM photoalbum_photos WHERE id_photo=$id_photo");
 	$row = mysql_fetch_assoc($sql);

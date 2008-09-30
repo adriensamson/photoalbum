@@ -64,6 +64,7 @@ elseif($_REQUEST['action']=='delete')
 }
 elseif($_REQUEST['action']=='confdelete')
 {
+	mysql_query("DELETE FROM photoalbum_comments WHERE id_photo IN (SELECT id_photo FROM photoalbum_photos WHERE id_album=$id_album)");
 	mysql_query("DELETE FROM photoalbum_tags WHERE id_photo IN (SELECT id_photo FROM photoalbum_photos WHERE id_album=$id_album)");
 	mysql_query("DELETE FROM photoalbum_photos WHERE id_album=$id_album");
 	mysql_query("DELETE FROM photoalbum_albums WHERE id_album=$id_album");
