@@ -11,6 +11,10 @@ a:hover
 {
 text-decoration: underline;
 }
+a img
+{
+border: none;
+}
 div.header
 {
 width: 900px;

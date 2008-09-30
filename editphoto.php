@@ -12,7 +12,7 @@ $id_photo = intval($_REQUEST['id_photo']);
 $sql=mysql_query("SELECT a.id_album, a.title FROM photoalbum_photos AS p LEFT JOIN photoalbum_albums AS a ON (a.id_album=p.id_album) WHERE p.id_photo=$id_photo");
 $row=mysql_fetch_assoc($sql);
 $id_album=$row['id_album'];
-$albumtitle=$row['title'];
+$title=$row['title'];
 if (!is_owner($user['id_user'], $id_album))
 	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/viewphoto.php?id_photo='.$id_photo);
 
@@ -39,7 +39,7 @@ if(!isset($_REQUEST['action']))
 	</menuitem>
 	<body page='editphoto'>";
 	
-	$sql = mysql_query("SELECT u.name, t.id_tag FROM photoalbum_tags AS t LEFT JOIN photoalbums_users AS u ON (t.id_user=u.id_user) WHERE t.id_photo=$id_photo");
+	$sql = mysql_query("SELECT u.name, t.id_tag FROM photoalbum_tags AS t LEFT JOIN photoalbum_users AS u ON (t.id_user=u.id_user) WHERE t.id_photo=$id_photo");
 	while($row=mysql_fetch_assoc($sql))
 		echo "<tag><idtag>$row[id_tag]</idtag><name>$row[name]</name></tag>";
 	echo "</body>
