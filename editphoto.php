@@ -96,6 +96,8 @@ elseif($_REQUEST['action']=='rotateleft')
 	system('convert '.escapeshellarg($uploaddir.$filename).' -rotate -90 '.escapeshellarg($uploaddir.$filename).' &');
 	system('convert '.escapeshellarg($thumbdir.$filename).' -rotate -90 '.escapeshellarg($thumbdir.$filename).' &');
 	system('convert '.escapeshellarg($photodir.$filename).' -rotate -90 '.escapeshellarg($photodir.$filename).' &');
+	$now = time();
+	mysql_query("UPDATE photoalbum_photos SET lastchanged=$now WHERE id_photo=$id_photo");
 	
 	$sql = mysql_query("SELECT id_tag, id_photo, x, y, width, height FROM photoalbum_tags WHERE id_photo=$id_photo");
 	while($row=mysql_fetch_assoc($sql))
@@ -117,6 +119,8 @@ elseif($_REQUEST['action']=='rotateright')
 	system('convert '.escapeshellarg($uploaddir.$filename).' -rotate 90 '.escapeshellarg($uploaddir.$filename).' &');
 	system('convert '.escapeshellarg($thumbdir.$filename).' -rotate 90 '.escapeshellarg($thumbdir.$filename).' &');
 	system('convert '.escapeshellarg($photodir.$filename).' -rotate 90 '.escapeshellarg($photodir.$filename).' &');
+	$now = time();
+	mysql_query("UPDATE photoalbum_photos SET lastchanged=$now WHERE id_photo=$id_photo");
 	
 	$sql = mysql_query("SELECT id_tag, id_photo, x, y, width, height FROM photoalbum_tags WHERE id_photo=$id_photo");
 	while($row=mysql_fetch_assoc($sql))

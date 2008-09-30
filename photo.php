@@ -27,11 +27,22 @@ else
 if (!can_access_photo($user['id_user'], $id_photo))
 	exit("Not authorized");
 
-$sql = mysql_query("SELECT filename FROM photoalbum_photos WHERE id_photo=$id_photo");
+$sql = mysql_query("SELECT filename, lastchanged FROM photoalbum_photos WHERE id_photo=$id_photo");
 $row = mysql_fetch_assoc($sql);
 $filename = $dir . $row['filename'];
 
-header("Expires: ".gmdate('r', time()+3600*24*365));
+$headers = apache_request_headers();
+if (isset($headers['If-Modified-Since']))
+{
+	$since = strtotime($headers['If-Modified-Since']);
+	if ($since == $row['lastchanged'])
+	{
+		header('HTTP/1.0 304 Not Modified');
+		exit;
+	}
+}
+
+header("Last-Modified: ".gmdate('r', $row['lastchanged']));
 header("Cache-Control: private");
 header("Content-Type: ".mime_content_type($filename));
 readfile($filename);
