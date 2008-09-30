@@ -15,6 +15,7 @@
 </xsl:template>
 
 <xsl:template match="body[@page='viewphoto']">
+	<xsl:call-template name="editphoto"/>
 	<div class="container">
 		<img src="photo_{/photoalbum/idphoto}.jpg" id="photo" alt="photo"/>
 		<xsl:apply-templates select="cadre"/>
@@ -73,6 +74,25 @@ height: <xsl:value-of select="@h"/>px;
 			<input type="submit" value="Envoyer"/>
 		</div>
 	</form>
+</xsl:template>
+
+<xsl:template name="editphoto">
+	<xsl:if test="/photoalbum/owner">
+		<div class="editphoto">
+			<a href="editphoto.php?id_photo={/photoalbum/idphoto}">
+				<img src="icons/gtk-edit.png" alt="Modifier" title="Modifier"/>
+			</a>
+			<a href="editphoto.php?action=rotateleft&amp;id_photo={/photoalbum/idphoto}">
+				<img src="icons/object-rotate-left.png" alt="Tourner vers la gauche" title="Tourner vers la gauche"/>
+			</a>
+			<a href="editphoto.php?action=rotateright&amp;id_photo={/photoalbum/idphoto}">
+				<img src="icons/object-rotate-right.png" alt="Tourner vers la droite" title="Tourner vers la droite"/>
+			</a>
+			<a href="editphoto.php?action=delete&amp;id_photo={/photoalbum/idphoto}">
+				<img src="icons/edit-delete.png" alt="Supprimer" title="Supprimer"/>
+			</a>
+		</div>
+	</xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

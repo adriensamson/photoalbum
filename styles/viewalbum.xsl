@@ -12,7 +12,7 @@
 </xsl:template>
 
 <xsl:template match="body[@page='viewalbum']">
-	<xsl:call-template name="addphoto"/>
+	<xsl:call-template name="editalbum"/>
 	<xsl:apply-templates select="photo"/>
 </xsl:template>
 
@@ -58,9 +58,19 @@
 	</xsl:choose>
 </xsl:template>
 
-<xsl:template name="addphoto">
+<xsl:template name="editalbum">
 	<xsl:if test="/photoalbum/owner">
-		<div class="addphoto"><a href="newphoto.php?id_album={/photoalbum/idalbum}">Ajouter une photo.</a></div>
+		<div class="editalbum">
+			<a href="newphoto.php?id_album={/photoalbum/idalbum}">
+				<img src="icons/document-new.png" alt="Nouvelle photo" title="Nouvelle photo"/>
+			</a>
+			<a href="editalbum.php?id_album={/photoalbum/idalbum}">
+				<img src="icons/gtk-edit.png" alt="Modifier" title="Modifier"/>
+			</a>
+			<a href="editalbum.php?action=delete&amp;id_album={/photoalbum/idalbum}">
+				<img src="icons/edit-delete.png" alt="Supprimer" title="Supprimer"/>
+			</a>
+		</div>
 	</xsl:if>
 </xsl:template>
 

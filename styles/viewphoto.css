@@ -37,3 +37,7 @@ visibility: hidden;
 height: 100%;
 width: 100%;
 }
+div.editphoto
+{
+margin: 1em;
+}

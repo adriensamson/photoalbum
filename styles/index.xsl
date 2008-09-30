@@ -11,7 +11,11 @@
 </xsl:template>
 
 <xsl:template match="body[@page='index']">
-	<div class="create"><a href="newalbum.php">Créer un nouvel album</a></div>
+	<div class="create">
+		<a href="newalbum.php">
+			<img src="icons/folder-new.png" alt="Nouvel album" title="Nouvel album"/>
+		</a>
+	</div>
 	<xsl:apply-templates select="album"/>
 </xsl:template>
 
