@@ -111,7 +111,10 @@ function get_unseen($id_user, $album = false)
 function set_seen($id_user, $id_photo)
 {
 	if ($id_user != -1)
+	{
+		get_unseen($id_user);
 		mysql_query("DELETE FROM photoalbum_unseen_changes WHERE id_user=$id_user AND id_photo=$id_photo");
+	}
 }
 
 ?>
