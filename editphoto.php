@@ -87,7 +87,7 @@ elseif($_REQUEST['action']=='deletetag')
 }
 elseif($_REQUEST['action']=='rotateleft')
 {
-	$sql = mysql_query("SELECT filename, id_album FROM photoalbum_photos WHERE id_photo=$row[id_photo]");
+	$sql = mysql_query("SELECT filename, id_album FROM photoalbum_photos WHERE id_photo=$id_photo");
 	$row = mysql_fetch_assoc($sql);
 	$filename = $row['id_album'].'/'.$row['filename'];
 	$imagesize = getimagesize($photodir.$filename);
@@ -107,7 +107,7 @@ elseif($_REQUEST['action']=='rotateleft')
 }
 elseif($_REQUEST['action']=='rotateright')
 {
-	$sql = mysql_query("SELECT filename, id_album FROM photoalbum_photos WHERE id_photo=$row[id_photo]");
+	$sql = mysql_query("SELECT filename, id_album FROM photoalbum_photos WHERE id_photo=$id_photo");
 	$row = mysql_fetch_assoc($sql);
 	$filename = $row['id_album'].'/'.$row['filename'];
 	$imagesize = getimagesize($photodir.$filename);
