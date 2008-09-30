@@ -39,8 +39,9 @@ if(!isset($_REQUEST['action']))
 	</menuitem>
 	<body page='editphoto'>";
 	
-	
-	
+	$sql = mysql_query("SELECT u.name, t.id_tag FROM photoalbum_tags AS t LEFT JOIN photoalbums_users AS u ON (t.id_user=u.id_user) WHERE t.id_photo=$id_photo");
+	while($row=mysql_fetch_assoc($sql))
+		echo "<tag><idtag>$row[id_tag]</idtag><name>$row[name]</name></tag>";
 	echo "</body>
 </photoalbum>";
 }
@@ -104,6 +105,7 @@ elseif($_REQUEST['action']=='rotateleft')
 		$y = $imagesize[0] - $row['x'] - $row['width'];
 		mysql_query("UPDATE photoalbum_tags SET x=$x, y=$y, width=$width, height=$height WHERE id_tag=$row[id_tag]");		
 	}
+	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/viewphoto.php?id_photo='.$id_photo);
 }
 elseif($_REQUEST['action']=='rotateright')
 {
@@ -124,9 +126,9 @@ elseif($_REQUEST['action']=='rotateright')
 		$y = $row['x'];
 		mysql_query("UPDATE photoalbum_tags SET x=$x, y=$y, width=$width, height=$height WHERE id_tag=$row[id_tag]");		
 	}
+	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/viewphoto.php?id_photo='.$id_photo);
 }
 else
 	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/viewphoto.php?id_photo='.$id_photo);
-
 
 ?>
