@@ -75,9 +75,9 @@ elseif($_REQUEST['action']=='confdelete')
 	$row = mysql_fetch_assoc($sql);
 	$filename = $row[0];
 	mysql_query("DELETE FROM photoalbum_photos WHERE id_photo=$id_photo");
-	unlink("$uploaddir$id_album/$filename");
-	unlink("$thumbdir$id_album/$filename");
-	unlink("$photodir$id_album/$filename");
+	@unlink("$uploaddir$id_album/$filename");
+	@unlink("$thumbdir$id_album/$filename");
+	@unlink("$photodir$id_album/$filename");
 	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/viewalbum.php?id_album='.$id_album);
 }
 elseif($_REQUEST['action']=='deletetag')

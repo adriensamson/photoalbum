@@ -20,7 +20,7 @@
 
 <xsl:template match="body[@page='deletephoto']">
 	<p>
-		Êtes-vous sûr de vouloir supprimer l'album <xsl:value-of select="title"/> ?<br/>
+		Êtes-vous sûr de vouloir supprimer cette photo ?<br/>
 		<a href="editphoto.php?action=confdelete&amp;id_photo={/photoalbum/idphoto}">Oui</a><br/>
 		<a href="viewphoto.php?id_photo={/photoalbum/idphoto}">Non</a>
 	</p>
