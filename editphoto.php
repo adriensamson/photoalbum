@@ -89,7 +89,7 @@ elseif($_REQUEST['action']=='rotateleft')
 {
 	$sql = mysql_query("SELECT filename, id_album FROM photoalbum_photos WHERE id_photo=$id_photo");
 	$row = mysql_fetch_assoc($sql);
-	$filename = $row['id_album'].'/'.$row['filename'];
+	$filename = $row['filename'];
 	$imagesize = getimagesize($photodir.$filename);
 	system('convert '.escapeshellarg($uploaddir.$filename).' -rotate -90 '.escapeshellarg($uploaddir.$filename).' &');
 	system('convert '.escapeshellarg($thumbdir.$filename).' -rotate -90 '.escapeshellarg($thumbdir.$filename).' &');
@@ -109,7 +109,7 @@ elseif($_REQUEST['action']=='rotateright')
 {
 	$sql = mysql_query("SELECT filename, id_album FROM photoalbum_photos WHERE id_photo=$id_photo");
 	$row = mysql_fetch_assoc($sql);
-	$filename = $row['id_album'].'/'.$row['filename'];
+	$filename = $row['filename'];
 	$imagesize = getimagesize($photodir.$filename);
 	system('convert '.escapeshellarg($uploaddir.$filename).' -rotate 90 '.escapeshellarg($uploaddir.$filename).' &');
 	system('convert '.escapeshellarg($thumbdir.$filename).' -rotate 90 '.escapeshellarg($thumbdir.$filename).' &');
