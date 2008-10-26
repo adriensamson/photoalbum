@@ -70,6 +70,9 @@
 			<a href="editalbum.php?action=delete&amp;id_album={/photoalbum/idalbum}">
 				<img src="icons/edit-delete.png" alt="Supprimer" title="Supprimer"/>
 			</a>
+			<a href="viewalbum.php?id_album={/photoalbum/idalbum}&amp;markseen=y">
+				<img src="icons/mark-seen.png" alt="Tout marquer comme vu" title="Tout marquer comme vu"/>
+			</a>
 		</div>
 	</xsl:if>
 </xsl:template>

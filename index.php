@@ -12,6 +12,8 @@ $id_user=$user['id_user'];
 if($user['id_user']==-1)
 	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/login.php');
 
+if(isset($_REQUEST['markseen']))
+	set_all_seen($id_user);
 $unseen = get_unseen($user['id_user'], true);
 header('Content-Type: application/xml');
 echo "<?xml version='1.0' encoding='UTF-8'?>

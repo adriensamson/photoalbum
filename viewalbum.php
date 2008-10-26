@@ -11,6 +11,9 @@ $user = auth();
 $id_album = intval($_REQUEST['id_album']);
 if (!can_access_album($user['id_user'], $id_album))
 	exit("Not authorized");
+
+if(isset($_REQUEST['markseen']))
+	set_all_seen($id_user);
 $unseen = get_unseen($user['id_user']);
 $sql = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
 $row = mysql_fetch_assoc($sql);

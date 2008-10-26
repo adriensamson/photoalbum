@@ -117,4 +117,16 @@ function set_seen($id_user, $id_photo)
 	}
 }
 
+function set_all_seen($id_user, $id_album=false)
+{
+	if ($id_user != -1)
+	{
+		get_unseen($id_user);
+		if (!$id_album)
+			mysql_query("DELETE FROM photoalbum_unseen_changes WHERE id_user=$id_user");
+		else
+			mysql_query("DELETE FROM photoalbum_unseen_changes WHERE id_user=$id_user AND id_photo IN (SELECT id_photo FROM photoalbum_photos WHERE id_album=$id_album)");
+	}
+}
+
 ?>
