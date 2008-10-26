@@ -16,7 +16,7 @@
 			<img src="icons/folder-new.png" alt="Nouvel album" title="Nouvel album"/>
 		</a>
 		<a href="index.php?markseen=y">
-			<img src="icons/mark-seen.png" alt="Tout marquer comme vu" title="Tout marquer comme vu"/>
+			<img src="icons/mark-read.png" alt="Tout marquer comme vu" title="Tout marquer comme vu"/>
 		</a>
 	</div>
 	<xsl:apply-templates select="album"/>
