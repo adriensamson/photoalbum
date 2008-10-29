@@ -77,6 +77,20 @@ border-top: none;
 background-color: white;
 color: black;
 }
+div.footer
+{
+text-align: center;
+font-size: 0.6em;
+width: 900px;
+border: solid 5px navy;
+background-color: navy;
+color: white;
+}
+div.footer a
+{
+color: white;
+text-decoration: underline;
+}
 hr.spacer
 {
 clear: both;
