@@ -53,13 +53,13 @@ function clickedrect(ev)
 	var y = ev.offsetY;
 	if (x + y < x2 - x1 - x + y2 - y1 - y)
 	{
-		x1=x;
-		y1=y;
+		x1+=x;
+		y1+=y;
 	}
 	else
 	{
-		x2=x;
-		y2=y;
+		x2=x1+x;
+		y2=y1+x;
 	}
 	document.getElementById('x').value=x1;
 	document.getElementById('y').value=y1;
