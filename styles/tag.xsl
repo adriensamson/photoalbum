@@ -14,7 +14,7 @@
 <xsl:template match="body[@page='tag']">
 	<div class="container">
 		<img src="photo_{/photoalbum/idphoto}.jpg" id="photo" alt="photo" onclick="clicked(event)"/>
-		<div id="rect"/>
+		<div id="rect" onclick="clicked(event)"/>
 	</div>
 	<form method="post" action="tag.php">
 		<p>
