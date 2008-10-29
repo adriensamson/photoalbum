@@ -47,7 +47,7 @@ function clicked(ev)
 	}
 }
 
-function clickedrect(evt)
+function clickedrect(ev)
 {
 	var x = ev.offsetX;
 	var y = ev.offsetY;
