@@ -59,7 +59,7 @@ function clickedrect(ev)
 	else
 	{
 		x2=x1+x;
-		y2=y1+x;
+		y2=y1+y;
 	}
 	document.getElementById('x').value=x1;
 	document.getElementById('y').value=y1;
