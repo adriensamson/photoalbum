@@ -20,10 +20,14 @@
 					<xsl:apply-templates select="menuitem|prev|next"/>
 				</div>
 			</div>
-		<div class="body">
-			<xsl:apply-templates select="body"/>
-			<hr class="spacer"/>
-		</div>
+			<div class="body">
+				<xsl:apply-templates select="body"/>
+				<hr class="spacer"/>
+			</div>
+			<div class="header"><!-- footer... -->
+				© 2008 Adrien SAMSON<br/>
+				Pour tout bug ou suggestion, aller sur <a href="http://redmine.kyklydse.com/projects/show/photoalbum">Redmine</a>.
+			</div>
 		</body>
 	</html>
 </xsl:template>
