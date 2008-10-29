@@ -46,3 +46,27 @@ function clicked(ev)
 		document.getElementById('rect').style.visibility='visible';
 	}
 }
+
+function clickedrect(evt)
+{
+	var x = ev.layerX;
+	var y = ev.layerY;
+	if (x + y < x2 - x1 - x + y2 - y1 - y)
+	{
+		x1=x;
+		y1=y;
+	}
+	else
+	{
+		x2=x;
+		y2=y;
+	}
+	document.getElementById('x').value=x1;
+	document.getElementById('y').value=y1;
+	document.getElementById('width').value=Math.max(0, x2-x1);
+	document.getElementById('height').value=Math.max(0, y2-y1);
+	document.getElementById('rect').style.left= x1 + 'px';
+	document.getElementById('rect').style.top= y1 + 'px';
+	document.getElementById('rect').style.width=(x2-x1) + 'px';
+	document.getElementById('rect').style.height=(y2-y1) + 'px';
+}
