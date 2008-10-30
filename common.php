@@ -108,6 +108,18 @@ function get_unseen($id_user, $album = false)
 	return $unseen;
 }
 
+function new_changes($id_user)
+{
+	if ($id_user==-1)
+		return array();
+	$sql = mysql_query("SELECT lastvisit FROM photoalbum_users WHERE id_user=$id_user");
+	$row = mysql_fetch_row($sql);
+	$lastvisit = $row[0];
+	$canaccess = select_can_access_photo($id_user);
+	$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE lastchanged > $lastvisit AND id_photo IN ($canaccess)");
+	return mysql_num_rows($sql);
+}
+
 function set_seen($id_user, $id_photo)
 {
 	if ($id_user != -1)
