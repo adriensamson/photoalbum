@@ -117,6 +117,11 @@ function set_seen($id_user, $id_photo)
 	}
 }
 
+function set_unseen($id_user, $id_photo)
+{
+	mysql_query("INSERT INTO photoalbum_unseen_changes (id_user, id_photo) VALUES ($id_user, $id_photo)");
+}
+
 function set_all_seen($id_user, $id_album=false)
 {
 	if ($id_user != -1)

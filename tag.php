@@ -84,6 +84,16 @@ elseif ($_REQUEST['action']=='tag')
 		else
 			mysql_query("DELETE FROM photoalbum_tags WHERE id_tag=$id_tag");
 	}
+	
+	// est ce le premier tag de cette personne dans l'album ?
+	$sql = mysql_query("SELECT id_tag FROM photoalbum_tags WHERE id_photo IN (SELECT id_photo FROM photoalbum_photos WHERE id_album IN (SELECT id_album FROM photoalbum_photos WHERE id_photo=$id_photo))");
+	if(mysql_num_rows($sql)==1)
+	{
+		// on marque tout l'album comme non vu
+		$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE id_album IN (SELECT id_album FROM photoalbum_photos WHERE id_photo=$id_photo)");
+		while($row=mysql_fetch_assoc($sql))
+			set_unseen($id_user, $row['id_photo']);
+	}
 	$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/viewphoto.php?id_photo=$id_photo";
 	header("Location: $url");
 }
