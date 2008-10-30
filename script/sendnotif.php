@@ -19,7 +19,7 @@ while($row=mysql_fetch_assoc($sql))
 	//on teste si il y a du nouveau
 	if (new_changes($row['id_user'])==0)
 		continue;
-	mail($row['email'], $subject, str_replace("NAME", $row['name'], $msg), $header, '-f photoalbum@kyklydse.com');
+	mail($row['email'], $subject, str_replace("NAME", $row['name'], $message), $header, '-f photoalbum@kyklydse.com');
 	mysql_query("UPDATE photoalbum_users SET lastmail=$now WHERE id_user=$row[id_user]");
 }
 ?>
