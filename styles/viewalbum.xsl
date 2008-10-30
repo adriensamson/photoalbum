@@ -59,8 +59,8 @@
 </xsl:template>
 
 <xsl:template name="editalbum">
-	<xsl:if test="/photoalbum/owner">
-		<div class="editalbum">
+	<div class="editalbum">
+		<xsl:if test="/photoalbum/owner">
 			<a href="newphoto.php?id_album={/photoalbum/idalbum}">
 				<img src="icons/document-new.png" alt="Nouvelle photo" title="Nouvelle photo"/>
 			</a>
@@ -70,11 +70,11 @@
 			<a href="editalbum.php?action=delete&amp;id_album={/photoalbum/idalbum}">
 				<img src="icons/edit-delete.png" alt="Supprimer" title="Supprimer"/>
 			</a>
-			<a href="viewalbum.php?id_album={/photoalbum/idalbum}&amp;markseen=y">
-				<img src="icons/mark-read.png" alt="Tout marquer comme vu" title="Tout marquer comme vu"/>
-			</a>
-		</div>
-	</xsl:if>
+		</xsl:if>
+		<a href="viewalbum.php?id_album={/photoalbum/idalbum}&amp;markseen=y">
+			<img src="icons/mark-read.png" alt="Tout marquer comme vu" title="Tout marquer comme vu"/>
+		</a>
+	</div>
 </xsl:template>
 
 </xsl:stylesheet>
