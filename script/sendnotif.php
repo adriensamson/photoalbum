@@ -11,10 +11,12 @@ Et n'oubliez pas que vous pouvez tout marquer comme vu en cliquant sur les petit
 Photoalbum";
 
 $header='Content-Type: text/plain; charset="UTF-8"\r\n';
+$now = time();
 $maxvisit = time() - 600; // dernière visite il y a plus de 10min
-$sql = mysql_query("SELECT email, name FROM photoalbum_users WHERE invite IS NULL AND lastvisit > lastmail AND lastvisit < $maxvisit AND id_user IN (SELECT id_user FROM photoalbum_unseen_changes)");
+$sql = mysql_query("SELECT id_user, email, name FROM photoalbum_users WHERE invite IS NULL AND lastvisit > lastmail AND lastvisit < $maxvisit AND id_user IN (SELECT id_user FROM photoalbum_unseen_changes)");
 while($row=mysql_fetch_assoc($sql))
 {
 	mail($row['email'], $subject, str_replace("NAME", $row['name'], $msg), $header, '-f photoalbum@kyklydse.com');
+	mysql_query("UPDATE photoalbum_users SET lastmail=$now WHERE id_user=$row[id_user]");
 }
 ?>
