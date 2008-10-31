@@ -16,15 +16,16 @@ if (!isset($_REQUEST['action']))
 		$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/index.php';
 		header("Location: $url");
 	}
-	header('Content-Type: application/xml');
-	echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/invite.xsl' type='text/xsl'?>
+	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<login>$user[name]</login>
 	<title>Invitation</title>";
 	if (isset($_SERVER['HTTP_REFERER']))
-		echo "<redirect>$_SERVER[HTTP_REFERER]</redirect>";
-	echo "<body page='invite'/></photoalbum>";
+		$xml_str .= "<redirect>$_SERVER[HTTP_REFERER]</redirect>";
+	$xml_str .= "<body page='invite'/></photoalbum>";
+	$xml_doc = new DOMDocument('1.0', 'UTF-8');
+	$xml_doc->loadXML($xml_str);
+	render($xml_doc, 'invite');
 }
 elseif ($_REQUEST['action']=='invite')
 {
@@ -73,15 +74,16 @@ elseif ($_REQUEST['action']=='invited')
 	}
 	else
 	{
-		header('Content-Type: application/xml');
-	echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/invite.xsl' type='text/xsl'?>
+		$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<title>Invité</title>
 	<body page='invited'>
 		<invite>$invite</invite>
 	</body>
 </photoalbum>";
+		$xml_doc = new DOMDocument('1.0', 'UTF-8');
+		$xml_doc->loadXML($xml_str);
+		render($xml_doc, 'invite');
 	}
 }
 elseif ($_REQUEST['action']=='setpasswd')

@@ -22,12 +22,13 @@ elseif ($user['id_user']!=-1)
 }
 elseif (!isset($_REQUEST['action']))
 {
-	header('Content-Type: application/xml');
-	echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/login.xsl' type='text/xsl'?>
+	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<title>Identification</title>
 	<body page='login'/></photoalbum>";
+	$xml_doc = new DOMDocument('1.0', 'UTF-8');
+	$xml_doc->loadXML($xml_str);
+	render($xml_doc, 'login');
 }
 else
 {

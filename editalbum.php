@@ -17,9 +17,7 @@ if(!isset($_REQUEST['action']))
 	$sql = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
 	$row = mysql_fetch_row($sql);
 	$title = $row[0];
-	header('Content-Type: application/xml');
-	echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/editalbum.xsl' type='text/xsl'?>
+	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<login>$user[name]</login>
 	<title>$title - Modification</title>
@@ -36,15 +34,16 @@ if(!isset($_REQUEST['action']))
 		<title>$title</title>
 	</body>
 </photoalbum>";
+	$xml_doc = new DOMDocument('1.0', 'UTF-8');
+	$xml_doc->loadXML($xml_str);
+	render($xml_doc, 'editalbum');
 }
 elseif($_REQUEST['action']=='delete')
 {
 	$sql = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
 	$row = mysql_fetch_row($sql);
 	$title = $row[0];
-	header('Content-Type: application/xml');
-	echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/editalbum.xsl' type='text/xsl'?>
+	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<login>$user[name]</login>
 	<title>$title</title>
@@ -61,6 +60,9 @@ elseif($_REQUEST['action']=='delete')
 		<title>$title</title>
 	</body>
 </photoalbum>";
+	$xml_doc = new DOMDocument('1.0', 'UTF-8');
+	$xml_doc->loadXML($xml_str);
+	render($xml_doc, 'editalbum');
 }
 elseif($_REQUEST['action']=='confdelete')
 {

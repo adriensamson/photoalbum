@@ -13,8 +13,7 @@ $sql = mysql_query("SELECT name FROM photoalbum_users WHERE id_user=$id_user");
 $row = mysql_fetch_assoc($sql);
 $name = $row['name'];
 
-header('Content-Type: application/xml');
-echo "<?xml version='1.0' encoding='UTF-8'?>
+$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <?xml-stylesheet href='styles/viewuser.xsl' type='text/xsl'?>
 <photoalbum>
 	<login>$user[name]</login>
@@ -39,25 +38,27 @@ while ($row = mysql_fetch_assoc($sql))
 	if($id_album!=$last_id_album)
 	{
 		if ($last_id_album!=-1)
-			echo "</album>";
+			$xml_str .= "</album>";
 		$sql2 = mysql_query("SELECT a.title, u.name FROM photoalbum_albums AS a LEFT JOIN photoalbum_users AS u ON (a.id_owner=u.id_user) WHERE a.id_album=$id_album");
 		$row2 = mysql_fetch_assoc($sql2);
-		echo "<album><id>$id_album</id><title>$row2[title]</title><author>$row2[name]</author>";
+		$xml_str .= "<album><id>$id_album</id><title>$row2[title]</title><author>$row2[name]</author>";
 		$last_id_album=$id_album;
 	}
-	echo "<photo><id>$id_photo</id>";
+	$xml_str .= "<photo><id>$id_photo</id>";
 	$sql2 = mysql_query("SELECT COUNT(*) FROM photoalbum_comments WHERE id_photo=$id_photo");
 	$row2 = mysql_fetch_row($sql2);
-	echo "<nbcomments>$row2[0]</nbcomments><peoples>";
+	$xml_str .= "<nbcomments>$row2[0]</nbcomments><peoples>";
 	$whosin = select_whois_in_photo($id_photo);
 	$sql2 = mysql_query("SELECT id_user, name FROM photoalbum_users WHERE id_user IN ($whosin) ORDER BY name ASC");
 	while ($row2=mysql_fetch_assoc($sql2))
-		echo "<people><id>$row2[id_user]</id><name>$row2[name]</name></people>";
-	echo "</peoples></photo>";
+		$xml_str .= "<people><id>$row2[id_user]</id><name>$row2[name]</name></people>";
+	$xml_str .= "</peoples></photo>";
 }
 if($id_last_album!=-1)
-	echo "</album>";
-echo "</body></photoalbum>";
-
+	$xml_str .= "</album>";
+$xml_str .= "</body></photoalbum>";
+$xml_doc = new DOMDocument('1.0', 'UTF-8');
+$xml_doc->loadXML($xml_str);
+render($xml_doc, 'viewuser');
 
 ?>

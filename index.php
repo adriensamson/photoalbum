@@ -15,17 +15,22 @@ if($user['id_user']==-1)
 if(isset($_REQUEST['markseen']))
 	set_all_seen($id_user);
 $unseen = get_unseen($user['id_user'], true);
-header('Content-Type: application/xml');
-echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/index.xsl' type='text/xsl'?>
-<photoalbum>
-	<login>$user[name]</login>
-	<title>Accueil</title>
-	<menuitem>
-		<title>Accueil</title>
-		<link>index.php</link>
-	</menuitem>
-	<body page='index'>";
+
+$xml_doc = new DOMDocument('1.0', 'UTF-8');
+$xml_photoalbum = $xml_doc->createElement('photoalbum');
+$xml_doc->appendChild($xml_photoalbum);
+$xml_login = $xml_doc->createElement('login', $user['name']);
+$xml_photoalbum->appendChild($xml_login);
+$xml_title = $xml_doc->createElement('title', 'Accueil');
+$xml_photoalbum->appendChild($xml_title);
+$xml_menuitem = $xml_doc->createElement('menuitem');
+$xml_photoalbum->appendChild($xml_menuitem);
+$xml_title = $xml_doc->createElement('title', 'Accueil');
+$xml_menuitem->appendChild($xml_title);
+$xml_link = $xml_doc->createElement('link', 'index.php');
+$xml_menuitem->appendChild($xml_link);
+$xml_body = $xml_doc->createElement('body');
+$xml_body->setAttribute('page', 'index');
 
 $can_access=select_can_access_album($id_user);
 $sql=mysql_query("SELECT title, id_album, id_owner FROM photoalbum_albums WHERE id_album IN
@@ -42,19 +47,37 @@ while($row=mysql_fetch_assoc($sql))
 	$nbphotos=$row2[0];
 	$whois = select_whois_in_album($id_album);
 	$sql2 = mysql_query("SELECT id_user, name FROM photoalbum_users WHERE id_user IN ($whois) ORDER BY name ASC");
-	echo "<album>
-			<id>$id_album</id>
-			<name>$title</name>
-			<author>$author</author>
-			<nbphotos>$nbphotos</nbphotos>";
+	
+	$xml_album = $xml_doc->createElement('album');
+	$xml_id = $xml_doc->createElement('id', $id_album);
+	$xml_album->appendChild($xml_id);
+	$xml_name = $xml_doc->createElement('name', $title);
+	$xml_album->appendChild($xml_name);
+	$xml_author = $xml_doc->createElement('author', $author);
+	$xml_album->appendChild($xml_author);
+	$xml_nbphotos = $xml_doc->createElement('nbphotos', $nbphotos);
+	$xml_album->appendChild($xml_nbphotos);
+	
 	if (isset($unseen[$id_album]))
-		echo "<changed/>";
-	echo "<peoples>";
+	{
+		$xml_changed = $xml_doc->createElement('changed');
+		$xml_album->appendChild($xml_changed);
+	}
+	$xml_peoples = $xml_doc->createElement('peoples');
 	while ($row2=mysql_fetch_assoc($sql2))
-		echo "<people><id>$row2[id_user]</id><name>$row2[name]</name></people>";
-	echo "</peoples></album>";
+	{
+		$xml_people = $xml_doc->createElement('people');
+		$xml_id = $xml_doc->createElement('id', $row2['id_user']);
+		$xml_people->appendChild($xml_id);
+		$xml_name = $xml_doc->createElement('name', $row2['name']);
+		$xml_people->appendChild($xml_name);
+		$xml_peoples->appendChild($xml_people);
+	}
+	$xml_album->appendChild($xml_peoples);
+	$xml_body->appendChild($xml_album);
 }
 
-echo "</body></photoalbum>";
+$xml_photoalbum->appendChild($xml_body);
 
+render($xml_doc, 'index');
 ?>

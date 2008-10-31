@@ -24,35 +24,62 @@ if (!isset($_REQUEST['action']))
 	$options = array();
 	while ($row=mysql_fetch_assoc($sql))
 		$options[$row['id_user']]=$row['name'];
-	header('Content-Type: application/xml');
-	echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/tag.xsl' type='text/xsl'?>
-<photoalbum>
-	<login>$user[name]</login>
-	<title>$albumtitle - Tag</title>
-	<idphoto>$id_photo</idphoto>
-	<menuitem>
-		<title>Accueil</title>
-		<link>index.php</link>
-	</menuitem>
-	<menuitem>
-		<title>$albumtitle</title>
-		<link>viewalbum.php?id_album=$id_album</link>
-	</menuitem>
-	<menuitem>
-		<title>Photo</title>
-		<link>viewphoto.php?id_photo=$id_photo</link>
-	</menuitem>
-	<menuitem>
-		<title>Inviter quelqu'un</title>
-		<link>invite.php</link>
-	</menuitem>
-	<body page='tag'><peoplelist>";
-
+	$xml_doc = new DOMDocument('1.0', 'UTF-8');
+	$xml_photoalbum = $xml_doc->createElement('photoalbum');
+	$xml_doc->appendChild($xml_photoalbum);
+	$xml_login = $xml_doc->createElement('login', $user['name']);
+	$xml_photoalbum->appendChild($xml_login);
+	$xml_title = $xml_doc->createElement('title', "$albumtitle - Tag");
+	$xml_photoalbum->appendChild($xml_title);
+	$xml_idphoto = $xml_doc->createElement('idphoto', $id_photo);
+	$xml_photoalbum->appendChild($xml_idphoto);
+	
+	$xml_menuitem = $xml_doc->createElement('menuitem');
+	$xml_title = $xml_doc->createElement('title', 'Accueil');
+	$xml_menuitem->appendChild($xml_title);
+	$xml_link = $xml_doc->createElement('link', 'index.php');
+	$xml_menuitem->appendChild($xml_link);
+	$xml_photoalbum->appendChild($xml_menuitem);
+	
+	$xml_menuitem = $xml_doc->createElement('menuitem');
+	$xml_title = $xml_doc->createElement('title', $albumtitle);
+	$xml_menuitem->appendChild($xml_title);
+	$xml_link = $xml_doc->createElement('link', "viewalbum.php?id_album=$id_album");
+	$xml_menuitem->appendChild($xml_link);
+	$xml_photoalbum->appendChild($xml_menuitem);
+	
+	$xml_menuitem = $xml_doc->createElement('menuitem');
+	$xml_title = $xml_doc->createElement('title', 'Photo');
+	$xml_menuitem->appendChild($xml_title);
+	$xml_link = $xml_doc->createElement('link', "viewphoto.php?id_photo=$id_photo");
+	$xml_menuitem->appendChild($xml_link);
+	$xml_photoalbum->appendChild($xml_menuitem);
+	
+	$xml_menuitem = $xml_doc->createElement('menuitem');
+	$xml_title = $xml_doc->createElement('title', 'Inviter quelqu\'un');
+	$xml_menuitem->appendChild($xml_title);
+	$xml_link = $xml_doc->createElement('link', "invite.php");
+	$xml_menuitem->appendChild($xml_link);
+	$xml_photoalbum->appendChild($xml_menuitem);
+	
+	$xml_body = $xml_doc->createElement('body');
+	$xml_body->setAttribute('page', 'tag');
+	$xml_peoplelist = $xml_doc->createElement('peoplelist');
+	
 	foreach($options as $id_user => $name)
-		echo "<people><id>$id_user</id><name>$name</name></people>";
+	{
+		$xml_people = $xml_doc->createElement('people');
+		$xml_id = $xml_doc->createElement('id', $id_user);
+		$xml_people->appendChild($xml_id);
+		$xml_name = $xml_doc->createElement('name', $name);
+		$xml_people->appendChild($xml_name);
+		$xml_peoplelist->appendChild($xml_people);
+	}
 
-	echo "</peoplelist></body></photoalbum>";
+	$xml_body->appendChild($xml_peoplelist);
+	$xml_photoalbum->appendChild($xml_body);
+	
+	render($xml_doc, 'tag');
 }
 elseif ($_REQUEST['action']=='tag')
 {

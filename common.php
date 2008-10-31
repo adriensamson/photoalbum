@@ -29,6 +29,36 @@ function auth()
 	return array("id_user" => -1, 'name' => "Anonymous");
 }
 
+function render($xml_doc, $xsl_name)
+{
+	if (isset($_REQUEST['xml']))
+	{
+		header('Content-Type: application/xml');
+		echo $xml_doc->saveXML();
+	}
+	else
+	{
+		$proc = new XSLTProcessor();
+		$doc = new DOMDocument();
+		$doc->load('styles/'.$xsl_name.'.xsl');
+		$proc->importStylesheet($doc);
+		$result = $proc->transformToDoc($xml_doc);
+		$result->preserveWhiteSpace = false;
+		$result->formatOutput = true;
+		if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
+		{
+			header('Content-Type: text/html');
+			echo $result->saveHTML();
+		}
+		else
+		{
+			header('Content-Type: application/xhtml+xml');
+			echo $result->saveXML();
+		}
+	}
+}
+
+
 function select_is_owner_album($id_user)
 {
 	return "SELECT id_album FROM photoalbum_albums WHERE id_owner=$id_user";

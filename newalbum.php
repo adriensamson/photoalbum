@@ -13,9 +13,7 @@ if ($user['id_user']==-1) exit("Not logged in");
 
 if (!isset($_REQUEST['action']))
 {
-	header('Content-Type: application/xml');
-	echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/newalbum.xsl' type='text/xsl'?>
+	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<login>$user[name]</login>
 	<menuitem>
@@ -24,6 +22,9 @@ if (!isset($_REQUEST['action']))
 	</menuitem>
 	<title>Nouvel album</title>
 	<body page='newalbum'/></photoalbum>";
+	$xml_doc = new DOMDocument('1.0', 'UTF-8');
+	$xml_doc->loadXML($xml_str);
+	render($xml_doc, 'newalbum');
 }
 else
 {

@@ -21,9 +21,7 @@ if(!isset($_REQUEST['action']))
 	$row = mysql_fetch_assoc($sql);
 	$title=$row['title'];
 	
-	header('Content-Type: application/xml');
-	echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/newphoto.xsl' type='text/xsl'?>
+	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<login>$user[name]</login>
 	<title>$title - Nouvelle photo</title>
@@ -40,9 +38,12 @@ if(!isset($_REQUEST['action']))
 	if(isset($_REQUEST['last']))
 	{
 		$id_last = $_REQUEST['last'];
-		echo "<lastphoto>$id_last</lastphoto>";
+		$xml_str .= "<lastphoto>$id_last</lastphoto>";
 	}
-	echo "</photoalbum>";
+	$xml_str .= "</photoalbum>";
+	$xml_doc = new DOMDocument('1.0', 'UTF-8');
+	$xml_doc->loadXML($xml_str);
+	render($xml_doc, 'newphoto');
 }
 else
 {

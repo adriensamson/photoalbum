@@ -25,7 +25,7 @@
 				<hr class="spacer"/>
 			</div>
 			<div class="footer">
-				© 2008 Adrien SAMSON<br/>
+				© 2008 Adrien Samson<br/>
 				Pour tout bug ou suggestion, aller sur <a href="http://redmine.kyklydse.com/projects/show/photoalbum">Redmine</a>.
 			</div>
 		</body>

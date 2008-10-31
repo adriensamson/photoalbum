@@ -18,9 +18,7 @@ if (!is_owner($user['id_user'], $id_album))
 
 if(!isset($_REQUEST['action']))
 {
-	header('Content-Type: application/xml');
-	echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/editphoto.xsl' type='text/xsl'?>
+	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<login>$user[name]</login>
 	<title>$title - Photo - Modification</title>
@@ -41,15 +39,17 @@ if(!isset($_REQUEST['action']))
 	
 	$sql = mysql_query("SELECT u.name, t.id_tag FROM photoalbum_tags AS t LEFT JOIN photoalbum_users AS u ON (t.id_user=u.id_user) WHERE t.id_photo=$id_photo");
 	while($row=mysql_fetch_assoc($sql))
-		echo "<tag><idtag>$row[id_tag]</idtag><name>$row[name]</name></tag>";
-	echo "</body>
+		$xml_str .= "<tag><idtag>$row[id_tag]</idtag><name>$row[name]</name></tag>";
+	$xml_str .= "</body>
 </photoalbum>";
+	$xml_doc = new DOMDocument('1.0', 'UTF-8');
+	$xml_doc->loadXML($xml_str);
+	render($xml_doc, 'editphoto');
 }
 elseif($_REQUEST['action']=='delete')
 {
 	header('Content-Type: application/xml');
-	echo "<?xml version='1.0' encoding='UTF-8'?>
-<?xml-stylesheet href='styles/editphoto.xsl' type='text/xsl'?>
+	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<login>$user[name]</login>
 	<title>$title - Photo - Modification</title>
@@ -68,6 +68,9 @@ elseif($_REQUEST['action']=='delete')
 	</menuitem>
 	<body page='deletephoto'/>
 </photoalbum>";
+	$xml_doc = new DOMDocument('1.0', 'UTF-8');
+	$xml_doc->loadXML($xml_str);
+	render($xml_doc, 'editphoto');
 }
 elseif($_REQUEST['action']=='confdelete')
 {
