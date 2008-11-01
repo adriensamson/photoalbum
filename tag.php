@@ -86,6 +86,12 @@ elseif ($_REQUEST['action']=='tag')
 	$id_photo=intval($_POST['id_photo']);
 	$username=mysql_real_escape_string($_POST['name']);
 	$id_user=intval($_REQUEST['id_user']);
+	$fake = 'NULL';
+	if ($id_user==-1)
+	{
+		$id_user = 'NULL';
+		$fake = "'".mysql_real_escape_string($_REQUEST['fake_tag'])."'";
+	}
 	if (!can_access_photo($user['id_user'], $id_photo))
 	{
 		$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/index.php';
@@ -100,14 +106,14 @@ elseif ($_REQUEST['action']=='tag')
 	$sql = mysql_query("SELECT id_tag FROM photoalbum_tags WHERE id_user=$id_user AND id_photo=$id_photo");
 	if (mysql_num_rows($sql)==0)
 	{
-		if ($x != -1) mysql_query("INSERT INTO photoalbum_tags (id_user, id_photo, x, y, height, width, id_tager) VALUES ($id_user, $id_photo, $x, $y, $height, $width, $id_tager)");
+		if ($x != -1) mysql_query("INSERT INTO photoalbum_tags (id_user, id_photo, x, y, height, width, id_tager, fake_tag) VALUES ($id_user, $id_photo, $x, $y, $height, $width, $id_tager, $fake)");
 	}
 	else
 	{
 		$result = mysql_fetch_assoc($sql);
 		$id_tag = $result['id_tag'];
 		if ($x != -1)
-			mysql_query("UPDATE photoalbum_tags SET x=$x, y=$y, height=$height, width=$width, id_tager=$id_tager WHERE id_tag=$id_tag");
+			mysql_query("UPDATE photoalbum_tags SET x=$x, y=$y, height=$height, width=$width, id_tager=$id_tager, fake_tag=$fake WHERE id_tag=$id_tag");
 		else
 			mysql_query("DELETE FROM photoalbum_tags WHERE id_tag=$id_tag");
 	}

@@ -48,7 +48,14 @@ height: <xsl:value-of select="@h"/>px;
 	<xsl:if test="/photoalbum/body/cadre">
 		<p>Sur cette photo : 
 		<xsl:for-each select="/photoalbum/body/cadre">
-			<a href="viewuser.php?id_user={people/id}" onmouseover="affcadre(0); affcadre({position()})" onmouseout="affcadre(0)"><xsl:value-of select="people/name"/></a>
+			<xsl:choose>
+				<xsl:when test="people/id">
+					<a href="viewuser.php?id_user={people/id}" onmouseover="affcadre(0); affcadre({position()})" onmouseout="affcadre(0)"><xsl:value-of select="people/name"/></a>
+				</xsl:when>
+				<xsl:otherwise>
+					<span onmouseover="affcadre(0); affcadre({position()})" onmouseout="affcadre(0)"><xsl:value-of select="people/name"/></span>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:if test="position()!=last()">, </xsl:if>
 		</xsl:for-each>.
 		</p>

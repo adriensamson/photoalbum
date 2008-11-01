@@ -37,9 +37,12 @@ if(!isset($_REQUEST['action']))
 	</menuitem>
 	<body page='editphoto'>";
 	
-	$sql = mysql_query("SELECT u.name, t.id_tag FROM photoalbum_tags AS t LEFT JOIN photoalbum_users AS u ON (t.id_user=u.id_user) WHERE t.id_photo=$id_photo");
+	$sql = mysql_query("SELECT u.name, t.id_tag, t.fake_tag FROM photoalbum_tags AS t LEFT JOIN photoalbum_users AS u ON (t.id_user=u.id_user) WHERE t.id_photo=$id_photo");
 	while($row=mysql_fetch_assoc($sql))
-		$xml_str .= "<tag><idtag>$row[id_tag]</idtag><name>$row[name]</name></tag>";
+	{
+		$name = ($row['name']) ? $row['name'] : $row['fake_tag'];
+		$xml_str .= "<tag><idtag>$row[id_tag]</idtag><name>$name</name></tag>";
+	}
 	$xml_str .= "</body>
 </photoalbum>";
 	$xml_doc = new DOMDocument('1.0', 'UTF-8');

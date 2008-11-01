@@ -19,6 +19,7 @@
 	<form method="post" action="tag.php">
 		<p>
 			<select name="id_user"><xsl:apply-templates select="peoplelist"/></select>
+			<input name="fake_tag"/>
 			<input id="x" type="hidden" name="x"/>
 			<input id="y" type="hidden" name="y"/>
 			<input id="height" type="hidden" name="height"/>
@@ -31,6 +32,7 @@
 </xsl:template>
 
 <xsl:template match="peoplelist">
+	<option value="-1">Faux tag...</option>
 	<xsl:for-each select="people">
 		<option value="{id}"><xsl:value-of select="name"/></option>
 	</xsl:for-each>

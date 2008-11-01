@@ -120,7 +120,7 @@ else
 $xml_body = $xml_doc->createElement('body');
 $xml_body->setAttribute('page', 'viewphoto');
 
-$sql = mysql_query("SELECT u.id_user, u.name, t.x, t.y, t.height, t.width FROM photoalbum_tags AS t LEFT JOIN photoalbum_users AS u ON (t.id_user=u.id_user) WHERE t.id_photo = $id_photo ORDER BY u.name ASC");
+$sql = mysql_query("SELECT t.id_user, u.name, t.x, t.y, t.height, t.width, t.fake_tag FROM photoalbum_tags AS t LEFT JOIN photoalbum_users AS u ON (t.id_user=u.id_user) WHERE t.id_photo = $id_photo ORDER BY u.name ASC");
 while ($row=mysql_fetch_assoc($sql))
 {
 	$xml_cadre = $xml_doc->createElement('cadre');
@@ -128,11 +128,20 @@ while ($row=mysql_fetch_assoc($sql))
 	$xml_cadre->setAttribute('y', $row['y']);
 	$xml_cadre->setAttribute('h', $row['height']);
 	$xml_cadre->setAttribute('w', $row['width']);
-	$xml_people = $xml_doc->createElement('people');
-	$xml_id = $xml_doc->createElement('id', $row['id_user']);
-	$xml_people->appendChild($xml_id);
-	$xml_name = $xml_doc->createElement('name', $row['name']);
-	$xml_people->appendChild($xml_name);
+	if($row['id_user'])
+	{
+		$xml_people = $xml_doc->createElement('people');
+		$xml_id = $xml_doc->createElement('id', $row['id_user']);
+		$xml_people->appendChild($xml_id);
+		$xml_name = $xml_doc->createElement('name', $row['name']);
+		$xml_people->appendChild($xml_name);
+	}
+	else
+	{
+		$xml_people = $xml_doc->createElement('people');
+		$xml_name = $xml_doc->createElement('name', $row['fake_tag']);
+		$xml_people->appendChild($xml_name);
+	}
 	$xml_cadre->appendChild($xml_people);
 	$xml_body->appendChild($xml_cadre);
 }
