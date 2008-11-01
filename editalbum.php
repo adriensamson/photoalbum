@@ -14,9 +14,10 @@ if (!is_owner($user['id_user'], $id_album))
 
 if(!isset($_REQUEST['action']))
 {
-	$sql = mysql_query("SELECT title FROM photoalbum_albums WHERE id_album=$id_album");
-	$row = mysql_fetch_row($sql);
-	$title = $row[0];
+	$sql = mysql_query("SELECT title, album_date FROM photoalbum_albums WHERE id_album=$id_album");
+	$row = mysql_fetch_assoc($sql);
+	$title = $row['title'];
+	$albumdate = $row['album_date'];
 	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<login>$user[name]</login>
@@ -32,6 +33,7 @@ if(!isset($_REQUEST['action']))
 	</menuitem>
 	<body page='editalbum'>
 		<title>$title</title>
+		<date>$albumdate</date>
 	</body>
 </photoalbum>";
 	$xml_doc = new DOMDocument('1.0', 'UTF-8');
@@ -76,7 +78,8 @@ elseif($_REQUEST['action']=='confdelete')
 elseif($_REQUEST['action']=='edit')
 {
 	$title=mysql_real_escape_string($_REQUEST['title']);
-	mysql_query("UPDATE photoalbum_albums SET title='$title' WHERE id_album=$id_album");
+	$album_date=mysql_real_escape_string($_REQUEST['album_date']);
+	mysql_query("UPDATE photoalbum_albums SET title='$title', album_date='$album_date' WHERE id_album=$id_album");
 	header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/viewalbum.php?id_album='.$id_album);
 }
 else

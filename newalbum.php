@@ -13,6 +13,7 @@ if ($user['id_user']==-1) exit("Not logged in");
 
 if (!isset($_REQUEST['action']))
 {
+	$now=date('Y-m-d');
 	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
 <photoalbum>
 	<login>$user[name]</login>
@@ -21,7 +22,10 @@ if (!isset($_REQUEST['action']))
 		<link>index.php</link>
 	</menuitem>
 	<title>Nouvel album</title>
-	<body page='newalbum'/></photoalbum>";
+	<body page='newalbum'>
+		<date>$now</date>
+	</body>
+</photoalbum>";
 	$xml_doc = new DOMDocument('1.0', 'UTF-8');
 	$xml_doc->loadXML($xml_str);
 	render($xml_doc, 'newalbum');
@@ -29,11 +33,12 @@ if (!isset($_REQUEST['action']))
 else
 {
 	$title=mysql_real_escape_string($_REQUEST['title']);
+	$album_date=mysql_real_escape_string($_REQUEST['album_date']);
 	$sql = mysql_query("SELECT id_album FROM photoalbum_albums WHERE title='$title'");
 	if (mysql_num_rows($sql) != 0)
 		exit("Title already taken");
 	$id_owner=intval($user['id_user']);
-	mysql_query("INSERT INTO photoalbum_albums (title, id_owner) VALUES ('$title', $id_owner)");
+	mysql_query("INSERT INTO photoalbum_albums (title, id_owner, album_date) VALUES ('$title', $id_owner, '$album_date')");
 	$sql = mysql_query("SELECT id_album FROM photoalbum_albums WHERE title='$title'");
 	$row = mysql_fetch_assoc($sql);
 	$id_album = $row['id_album'];

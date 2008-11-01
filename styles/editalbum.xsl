@@ -14,6 +14,7 @@
 			<input type="hidden" name="action" value="edit"/>
 			<input type="hidden" name="id_album" value="{/photoalbum/idalbum}"/>
 			Titre de l'album : <input name="title" value="{title}"/><br/>
+			Date de l'album : <input name="date_album" value="{date}"/><br/>
 			<input type="submit" value="Modifier"/>
 		</p>
 	</form>

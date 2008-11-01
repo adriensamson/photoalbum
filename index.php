@@ -34,7 +34,7 @@ $xml_body->setAttribute('page', 'index');
 
 $can_access=select_can_access_album($id_user);
 $sql=mysql_query("SELECT title, id_album, id_owner FROM photoalbum_albums WHERE id_album IN
-		($can_access) ORDER BY title ASC");
+		($can_access) ORDER BY album_date DESC");
 while($row=mysql_fetch_assoc($sql))
 {
 	$title=$row['title'];

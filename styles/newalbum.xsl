@@ -12,6 +12,7 @@
 	<form method="post" action="newalbum.php">
 		<p>
 			Nom de l'album : <input name="title"/><br/>
+			Date de l'album : <input name="album_date" value="{date}"></input><br/>
 			<input type="submit" value="Créer"/>
 			<input type="hidden" name="action" value="create"/>
 		</p>
