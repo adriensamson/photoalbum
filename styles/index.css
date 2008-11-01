@@ -7,10 +7,14 @@ div.album
 clear: both;
 padding: 1em;
 }
-div.album img
+img.thumb
 {
 float: left;
 border: none;
+margin-right: 1em;
+}
+img.moreless
+{
 margin-right: 1em;
 }
 span.author
