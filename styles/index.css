@@ -5,7 +5,7 @@ background-color: #FFC0FF;
 div.album
 {
 clear: both;
-padding: 1em;
+padding: 0.5em;
 }
 img.thumb
 {
@@ -15,7 +15,7 @@ margin-right: 1em;
 }
 img.moreless
 {
-margin-right: 1em;
+margin-right: 0.5em;
 }
 span.author
 {
@@ -24,7 +24,7 @@ font-style: italic;
 }
 div.create
 {
-margin: 1em;
+margin: 0.5em;
 }
 strong
 {
