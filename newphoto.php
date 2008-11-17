@@ -38,7 +38,10 @@ if(!isset($_REQUEST['action']))
 	if(isset($_REQUEST['last']))
 	{
 		$id_last = $_REQUEST['last'];
-		$xml_str .= "<lastphoto>$id_last</lastphoto>";
+		$sql = mysql_query("SELECT filename FROM photoalbum_photos WHERE id_photo=$id_last");
+		$row = mysql_fetch_assoc($sql);
+		$filename = basename($row['filename']);
+		$xml_str .= "<lastphoto><id>$id_last</id><filename>$filename</filename></lastphoto>";
 	}
 	$xml_str .= "</photoalbum>";
 	$xml_doc = new DOMDocument('1.0', 'UTF-8');
