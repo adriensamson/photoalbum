@@ -24,7 +24,7 @@
 	<xsl:if test="/photoalbum/lastphoto">
 		<p>Dernière photo envoyée :<br />
 			<a href="viewphoto.php?id_photo={/photoalbum/lastphoto/id}">
-				<img src="photo.php?thumb=y&amp;id_photo={/photoalbum/lastphoto/id}" alt="{/photoalbum/lastphoto/filename}"/>
+				<img src="photo.php?thumb=y&amp;id_photo={/photoalbum/lastphoto/id}" alt="{/photoalbum/lastphoto/filename}" title="{/photoalbum/lastphoto/filename}"/>
 			</a>
 		</p>
 	</xsl:if>
