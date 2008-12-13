@@ -42,9 +42,10 @@ elseif($_REQUEST['action']=='lostpasswd')
 }
 elseif($_REQUEST['action']=='sendinvite')
 {
-	$email = mysql_real_escape_string($_REQUEST['email']);
+	$email = $_REQUEST['email'];
+	$memail = mysql_real_escape_string($_REQUEST['email']);
 	$invite = rand();
-	$sql = mysql_query("SELECT id_user FROM photoalbum_users WHERE email='$email'");
+	$sql = mysql_query("SELECT id_user FROM photoalbum_users WHERE email='$memail'");
 	if (mysql_num_rows($sql)==0)
 	{
 		$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?action=lostpasswd';
@@ -52,7 +53,7 @@ elseif($_REQUEST['action']=='sendinvite')
 	}
 	else
 	{
-		mysql_query("UPDATE photoalbum_users SET invite=$invite WHERE email='email'");
+		mysql_query("UPDATE photoalbum_users SET invite=$invite WHERE email='$memail'");
 		$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/invite.php?action=invited&invite=$invite";
 		$message = "$name, vous semblez avoir oublié votre mot de passe.
 Pour le réinitialiser, il suffit de vous ré-inscrire grâce au lien suivant :
