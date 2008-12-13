@@ -23,7 +23,7 @@
 <xsl:template match="body[@page='lostpasswd']">
 	<form method="post" action="login.php">
 		<p>
-			<input type="hidden" name="sendinvite" value="login"/>
+			<input type="hidden" name="action" value="sendinvite"/>
 			E-mail : <input name="email"/><br/>
 			<input type="submit" value="Renvoyer une invitation"/>
 		</p>
