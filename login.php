@@ -30,11 +30,49 @@ elseif (!isset($_REQUEST['action']))
 	$xml_doc->loadXML($xml_str);
 	render($xml_doc, 'login');
 }
+elseif($_REQUEST['action']=='lostpasswd')
+{
+	$xml_str = "<?xml version='1.0' encoding='UTF-8'?>
+<photoalbum>
+	<title>Identification</title>
+	<body page='lostpasswd'/></photoalbum>";
+	$xml_doc = new DOMDocument('1.0', 'UTF-8');
+	$xml_doc->loadXML($xml_str);
+	render($xml_doc, 'login');
+}
+elseif($_REQUEST['action']=='sendinvite')
+{
+	$email = mysql_real_escape_string($_REQUEST['email']);
+	$invite = rand();
+	$sql = mysql_query("SELECT id_user FROM photoalbum_users WHERE email='$email'");
+	if (mysql_num_rows($sql)==0)
+	{
+		$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?action=lostpasswd';
+		header("Location: $url");
+	}
+	else
+	{
+		mysql_query("UPDATE photoalbum_users SET invite=$invite WHERE email='email'");
+		$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/invite.php?action=invited&invite=$invite";
+		$message = "$name, vous semblez avoir oublié votre mot de passe.
+Pour le réinitialiser, il suffit de vous ré-inscrire grâce au lien suivant :
+$url
+
+A très bientôt.
+--
+Il est conseillé d'utiliser Firefox pour que le site fonctionne correctement.
+http://www.getfirefox.com
+";
+	$subject = "Oubli de votre mot de passe sur photoalbum";
+	$header='Content-Type: text/plain; charset="UTF-8"\r\n';
+	mail($email, $subject, $message, $header, '-f photoalbum@kyklydse.com');
+	}
+}
 else
 {
-	$username = mysql_real_escape_string($_REQUEST['username']);
+	$email = mysql_real_escape_string($_REQUEST['email']);
 	$md5 = md5($_REQUEST['passwd']);
-	$sql = mysql_query("SELECT id_user, md5 FROM photoalbum_users WHERE name='$username' AND md5='$md5'");
+	$sql = mysql_query("SELECT id_user, md5 FROM photoalbum_users WHERE email='$email' AND md5='$md5'");
 	if (mysql_num_rows($sql)==0)
 	{
 		$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];

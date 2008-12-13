@@ -12,9 +12,20 @@
 	<form method="post" action="login.php">
 		<p>
 			<input type="hidden" name="action" value="login"/>
-			Nom : <input name="username"/><br/>
+			E-mail : <input name="email"/><br/>
 			Mot de passe : <input type="password" name="passwd"/><br/>
 			<input type="submit" value="S'identifier"/>
+		</p>
+	</form>
+	<p><a href="login.php?action=lostpasswd">Mot de passe oublié ?</a></p>
+</xsl:template>
+
+<xsl:template match="body[@page='lostpasswd']">
+	<form method="post" action="login.php">
+		<p>
+			<input type="hidden" name="sendinvite" value="login"/>
+			E-mail : <input name="email"/><br/>
+			<input type="submit" value="Renvoyer une invitation"/>
 		</p>
 	</form>
 </xsl:template>
