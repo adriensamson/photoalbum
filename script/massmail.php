@@ -12,7 +12,7 @@ Et en plus il est enfin compatible avec Internet Explorer :-)
 Adrien
 ";
 
-$header='Content-Type: text/plain; charset="UTF-8"\r\nSender: www-data@localhost\r\n';
+$header="Content-Type: text/plain; charset=\"UTF-8\"\r\nSender: www-data@localhost\r\n";
 $where = (!$mailinvited) ? " WHERE invite IS NULL" : "";
 $sql = mysql_query("SELECT invite, email FROM photoalbum_users".$where);
 while($row=mysql_fetch_assoc($sql))

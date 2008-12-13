@@ -58,7 +58,7 @@ Il est conseillé d'utiliser Firefox pour que le site fonctionne correctement.
 http://www.getfirefox.com
 ";
 	$subject = "$from_name vous a invité sur un album photo";
-	$header='Content-Type: text/plain; charset="UTF-8"\r\nSender: www-data@localhost\r\n';
+	$header="Content-Type: text/plain; charset=\"UTF-8\"\r\nSender: www-data@localhost\r\n";
 	mail($email, $subject, $message, $header, '-f photoalbum@kyklydse.com');
 	$url = (isset($_REQUEST['redirect'])) ? $_REQUEST['redirect'] : 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/index.php';
 	header("Location: $url");

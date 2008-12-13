@@ -10,7 +10,7 @@ Je vous propose donc de venir voir : http://www.kyklydse.com/photoalbum\n
 Et n'oubliez pas que vous pouvez tout marquer comme vu en cliquant sur les petites lunettes ;)
 Photoalbum";
 
-$header='Content-Type: text/plain; charset="UTF-8"\r\nSender: www-data@localhost\r\n';
+$header="Content-Type: text/plain; charset=\"UTF-8\"\r\nSender: www-data@localhost\r\n";
 $now = time();
 $maxvisit = time() - 600; // dernière visite il y a plus de 10min
 $sql = mysql_query("SELECT id_user, email, name FROM photoalbum_users WHERE invite IS NULL AND lastvisit > lastmail AND lastvisit < $maxvisit");
