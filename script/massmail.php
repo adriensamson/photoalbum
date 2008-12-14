@@ -21,6 +21,6 @@ while($row=mysql_fetch_assoc($sql))
 		$msg = $message."\n\n--\n\nVous avez été invité mais n'êtes jamais venu.\nPour vous enregistrer, cliquez ici :\nhttp://www.kyklydse.com/photoalbum/invite.php?action=invited&invite=".$row['invite'];
 	else
 		$msg = $message;
-	mail($row['email'], $subject, $msg, $header, '-f "Photoalbum <photoalbum@kyklydse.com>"');
+	mail($row['email'], $subject, $msg, $header, '-f <photoalbum@kyklydse.com>');
 }
 ?>

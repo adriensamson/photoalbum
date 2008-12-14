@@ -66,7 +66,7 @@ http://www.getfirefox.com
 ";
 	$subject = "Oubli de votre mot de passe sur photoalbum";
 	$header="Content-Type: text/plain; charset=\"UTF-8\"\r\n";
-	mail($email, $subject, $message, $header, '-f "Photoalbum <photoalbum@kyklydse.com>"');
+	mail($email, $subject, $message, $header, '-f <photoalbum@kyklydse.com>');
 	$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 	header("Location: $url");
 	}
