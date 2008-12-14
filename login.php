@@ -55,7 +55,7 @@ elseif($_REQUEST['action']=='sendinvite')
 	{
 		mysql_query("UPDATE photoalbum_users SET invite=$invite WHERE email='$memail'");
 		$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/invite.php?action=invited&invite=$invite";
-		$message = "$name, vous semblez avoir oublié votre mot de passe.
+		$message = "Vous semblez avoir oublié votre mot de passe.
 Pour le réinitialiser, il suffit de vous ré-inscrire grâce au lien suivant :
 $url
 
