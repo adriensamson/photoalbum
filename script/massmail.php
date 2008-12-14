@@ -12,7 +12,7 @@ Et en plus il est enfin compatible avec Internet Explorer :-)
 Adrien
 ";
 
-$header="Content-Type: text/plain; charset=\"UTF-8\"\r\nSender: www-data@localhost\r\n";
+$header="Content-Type: text/plain; charset=\"UTF-8\"\r\n";
 $where = (!$mailinvited) ? " WHERE invite IS NULL" : "";
 $sql = mysql_query("SELECT invite, email FROM photoalbum_users".$where);
 while($row=mysql_fetch_assoc($sql))
@@ -21,6 +21,6 @@ while($row=mysql_fetch_assoc($sql))
 		$msg = $message."\n\n--\n\nVous avez été invité mais n'êtes jamais venu.\nPour vous enregistrer, cliquez ici :\nhttp://www.kyklydse.com/photoalbum/invite.php?action=invited&invite=".$row['invite'];
 	else
 		$msg = $message;
-	mail($row['email'], $subject, $msg, $header, '-f photoalbum@kyklydse.com');
+	mail($row['email'], $subject, $msg, $header, '-f "Photoalbum <photoalbum@kyklydse.com>"');
 }
 ?>
