@@ -17,7 +17,8 @@
 <xsl:template match="body[@page='viewphoto']">
 	<xsl:call-template name="editphoto"/>
 	<div class="container">
-		<img src="photo_{/photoalbum/idphoto}.jpg" id="photo" alt="photo"/>
+		<img src="photo_{/photoalbum/idphoto}.jpg" id="photo" alt="photo"/><br/>
+		<div class="photolegend"><xsl:value-of select="legend"/></div>
 		<xsl:apply-templates select="cadre"/>
 	</div>
 	<xsl:call-template name="peoplelist"/>

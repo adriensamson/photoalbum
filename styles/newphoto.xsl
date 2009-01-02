@@ -15,6 +15,7 @@
 			<input name="photo" type="file"/><br/>
 			<input type="hidden" name="id_album" value="{/photoalbum/idalbum}"/>
 			<input type="hidden" name="action" value="upload"/>
+			Légende : <input name="legend" size="60"></input><br />
 			<input type="submit" value="Ajouter"/>
 		</p>
 	</form>

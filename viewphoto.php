@@ -21,10 +21,11 @@ if (intval($_REQUEST['id_user'])>0)
 }	
 if (!can_access_photo($user['id_user'], $id_photo))
 	exit("Not authorized");
-$sql=mysql_query("SELECT a.id_album, a.title FROM photoalbum_photos AS p LEFT JOIN photoalbum_albums AS a ON (a.id_album=p.id_album) WHERE p.id_photo=$id_photo");
+$sql=mysql_query("SELECT a.id_album, a.title, p.legend FROM photoalbum_photos AS p LEFT JOIN photoalbum_albums AS a ON (a.id_album=p.id_album) WHERE p.id_photo=$id_photo");
 $row=mysql_fetch_assoc($sql);
 $id_album=$row['id_album'];
 $albumtitle=$row['title'];
+$legend = $row['legend'];
 
 $xml_doc = new DOMDocument('1.0', 'UTF-8');
 $xml_photoalbum = $xml_doc->createElement('photoalbum');
@@ -119,7 +120,8 @@ else
 
 $xml_body = $xml_doc->createElement('body');
 $xml_body->setAttribute('page', 'viewphoto');
-
+$xml_legend = $xml_doc->createElement('legend', $legend);
+$xml_body->appendChild($xml_legend);
 $sql = mysql_query("SELECT t.id_user, u.name, t.x, t.y, t.height, t.width, t.fake_tag FROM photoalbum_tags AS t LEFT JOIN photoalbum_users AS u ON (t.id_user=u.id_user) WHERE t.id_photo = $id_photo ORDER BY u.name ASC");
 while ($row=mysql_fetch_assoc($sql))
 {

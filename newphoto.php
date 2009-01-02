@@ -60,7 +60,8 @@ else
 	system('convert '.escapeshellarg($uploaddir.$filename).' -resize 800x800 '.escapeshellarg($photodir.$filename).' &');
 	$filename = mysql_real_escape_string($filename);
 	$now = time();
-	mysql_query("INSERT INTO photoalbum_photos (filename, id_album, lastchanged) VALUES ('$filename', $id_album, $now)");
+	$legend = mysql_real_escape_string($_REQUEST['legend']);
+	mysql_query("INSERT INTO photoalbum_photos (filename, id_album, lastchanged, legend) VALUES ('$filename', $id_album, $now, '$legend')");
 	$sql = mysql_query("SELECT id_photo FROM photoalbum_photos WHERE filename='$filename' AND id_album=$id_album");
 	$row = mysql_fetch_assoc($sql);
 	$id_photo = $row['id_photo'];

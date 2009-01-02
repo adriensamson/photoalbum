@@ -11,6 +11,7 @@
 <xsl:template match="body[@page='editphoto']">
 	<p>
 		Liste des tags de cette photo :<br/>
+		<xsl:if test="tag">
 		<ul><xsl:for-each select="tag">
 			<li>
 				<a href="editphoto.php?action=deletetag&amp;id_photo={/photoalbum/idphoto}&amp;id_tag={idtag}">
@@ -18,8 +19,17 @@
 				</a>
 				<xsl:value-of select="name"/>
 			</li>
-		</xsl:for-each></ul>
+		</xsl:for-each></ul></xsl:if>
 	</p>
+	<form method="post" action="editphoto.php">
+		<p>
+			Légende :
+			<input name="legend" value="{legend}" size="60"/>
+			<input type="hidden" name="action" value="editlegend"/>
+			<input type="hidden" name="id_photo" value="{/photoalbum/idphoto}"/>
+			<input type="submit" value="Modifier"/>
+		</p>
+	</form>
 </xsl:template>
 
 <xsl:template match="body[@page='deletephoto']">

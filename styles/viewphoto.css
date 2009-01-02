@@ -4,6 +4,13 @@ background-color: silver;
 color: black;
 font-size: 0.7em;
 }
+div.photolegend
+{
+margin-left: 0px;
+width: 800px;
+text-align: center;
+font-style: italic;
+}
 div.commentbox
 {
 margin: 1em;
