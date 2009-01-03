@@ -15,6 +15,12 @@ CREATE TABLE `photoalbum_comments` (
   PRIMARY KEY  (`id_comment`)
 );
 
+CREATE TABLE `photoalbum_guests` (
+  `id_album` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  KEY `id_user` (`id_user`)
+);
+
 CREATE TABLE `photoalbum_photos` (
   `id_photo` int(11) NOT NULL auto_increment,
   `filename` text,

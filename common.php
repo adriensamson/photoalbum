@@ -71,9 +71,9 @@ function select_is_owner_photo($id_user)
 function select_can_access_album($id_user)
 {
 	$is_owner = select_is_owner_album($id_user);
-	return "SELECT id_album FROM photoalbum_albums WHERE (id_album IN ($is_owner) OR id_album IN
-		(SELECT id_album FROM photoalbum_photos WHERE id_photo IN
-		(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user)))";
+	return "$is_owner UNION SELECT id_album FROM photoalbum_photos WHERE id_photo IN" .
+			"	(SELECT id_photo FROM photoalbum_tags WHERE id_user=$id_user)" .
+			"UNION SELECT id_album FROM photoalbum_guests WHERE id_user=$id_user";
 }
 function select_can_access_photo($id_user)
 {
