@@ -75,7 +75,7 @@ else
 {
 	$email = mysql_real_escape_string($_REQUEST['email']);
 	$md5 = md5($_REQUEST['passwd']);
-	$sql = mysql_query("SELECT id_user, md5 FROM photoalbum_users WHERE email='$email' AND md5='$md5'");
+	$sql = mysql_query("SELECT id_user, md5 FROM photoalbum_users WHERE mail='$email' AND md5='$md5'");
 	if (mysql_num_rows($sql)==0)
 	{
 		$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
