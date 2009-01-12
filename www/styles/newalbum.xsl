@@ -14,7 +14,7 @@
 			Nom de l'album : <input name="title"/><br/>
 			Date de l'album : <input name="album_date" value="{date}"></input><br/>
 			<input type="submit" value="Créer"/>
-			<input type="hidden" name="action" value="create"/>
+			<input type="hidden" name="action" value="addalbum"/>
 		</p>
 	</form>
 </xsl:template>

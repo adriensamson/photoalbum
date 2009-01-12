@@ -57,6 +57,11 @@ while($row=mysql_fetch_assoc($sql))
 	$xml_album->appendChild($xml_author);
 	$xml_nbphotos = $xml_doc->createElement('nbphotos', $nbphotos);
 	$xml_album->appendChild($xml_nbphotos);
+	if ($row['id_owner']==$user['id_user'])
+	{
+		$xml_owner = $xml_doc->createElement('owner');
+		$xml_album->appendChild($xml_owner);
+	}
 	
 	if (isset($unseen[$id_album]))
 	{
