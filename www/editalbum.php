@@ -49,6 +49,7 @@ if(!isset($_REQUEST['action']))
 	$xml_title = $xml_doc->createElement('title', $title);
 	$xml_body->appendChild($xml_title);
 	$xml_date = $xml_doc->createElement('date', $albumdate);
+	$xml_body->appendChild($xml_date);
 	
 	$xml_guests = $xml_doc->createElement('guests');
 	
