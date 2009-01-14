@@ -34,12 +34,9 @@ else
 {
 	$title=mysql_real_escape_string($_REQUEST['title']);
 	$album_date=mysql_real_escape_string($_REQUEST['album_date']);
-	$sql = mysql_query("SELECT id_album FROM photoalbum_albums WHERE title='$title'");
-	if (mysql_num_rows($sql) != 0)
-		exit("Title already taken");
 	$id_owner=intval($user['id_user']);
 	mysql_query("INSERT INTO photoalbum_albums (title, id_owner, album_date) VALUES ('$title', $id_owner, '$album_date')");
-	$sql = mysql_query("SELECT id_album FROM photoalbum_albums WHERE title='$title'");
+	$sql = mysql_query("SELECT id_album FROM photoalbum_albums WHERE title='$title' ORDER BY id_album DESC LIMIT 1");
 	$row = mysql_fetch_assoc($sql);
 	$id_album = $row['id_album'];
 	mkdir($uploaddir.$id_album);
