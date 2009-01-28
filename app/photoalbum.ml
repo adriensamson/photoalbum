@@ -149,8 +149,8 @@ let config =
 				match () with
 					| _ when l > 7 && String.sub s 0 7 = "Cookie=" -> cookie <- Some (String.sub s 7 (l-7))
 					| _ when l > 4 && String.sub s 0 4 = "Url=" -> url <- Some (String.sub s 4 (l-4))
-					| _ when l > 9 && String.sub s 0 9 = "ProxyHost" -> proxy_host <- Some (String.sub s 9 (l-9))
-					| _ when l > 9 && String.sub s 0 9 = "ProxyPort" -> proxy_port <- Some (int_of_string (String.sub s 9 (l-9)))
+					| _ when l > 10 && String.sub s 0 10 = "ProxyHost=" -> proxy_host <- Some (String.sub s 9 (l-9))
+					| _ when l > 10 && String.sub s 0 10 = "ProxyPort=" -> proxy_port <- Some (int_of_string (String.sub s 9 (l-9)))
 					| _ -> ()
 			done;
 			close_in inch
