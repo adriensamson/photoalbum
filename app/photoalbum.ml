@@ -149,8 +149,8 @@ let config =
 				match () with
 					| _ when l > 7 && String.sub s 0 7 = "Cookie=" -> cookie <- Some (String.sub s 7 (l-7))
 					| _ when l > 4 && String.sub s 0 4 = "Url=" -> url <- Some (String.sub s 4 (l-4))
-					| _ when l > 10 && String.sub s 0 10 = "ProxyHost=" -> proxy_host <- Some (String.sub s 9 (l-9))
-					| _ when l > 10 && String.sub s 0 10 = "ProxyPort=" -> proxy_port <- Some (int_of_string (String.sub s 9 (l-9)))
+					| _ when l > 10 && String.sub s 0 10 = "ProxyHost=" -> proxy_host <- Some (String.sub s 10 (l-10))
+					| _ when l > 10 && String.sub s 0 10 = "ProxyPort=" -> proxy_port <- Some (int_of_string (String.sub s 10 (l-10)))
 					| _ -> ()
 			done;
 			close_in inch
@@ -265,18 +265,28 @@ module UI = struct
 	let set_photos l =
 		List.iter photos_vbox#remove photos_vbox#all_children;
 		photos := Array.of_list (List.map (fun f -> {filename=f; checked=true; legend=""}) l);
-		let add_photo i ph =
-			let hbox = GPack.hbox ~packing:photos_vbox#pack () in
-			let checkbox = GButton.check_button ~active:true ~packing:hbox#pack () in
-			let pixbuf = GdkPixbuf.from_file_at_size !photos.(i).filename ~width:200 ~height:200 in
-			let image = GMisc.image ~pixbuf ~width:200 ~packing:hbox#pack () in
-			let entry = GEdit.entry ~packing:(hbox#pack ~expand:true) () in
-			ignore (checkbox#connect#toggled ~callback:(fun () -> !photos.(i).checked <- checkbox#active));
-			ignore (entry#connect#changed ~callback:(fun () -> !photos.(i).legend <- entry#text))
+		let n = Array.length !photos in
+		let dialog = GWindow.dialog ~title:"Chargement des photos" ~width:300 ~modal:true () in
+		let label = GMisc.label ~text:("Chargements de " ^ string_of_int n ^ " photos") ~packing:dialog#vbox#pack () in
+		let progress = GRange.progress_bar ~packing:dialog#vbox#pack () in
+		progress#set_text ("0/" ^ string_of_int n ^ " photos");
+		dialog#show ();
+		let f () =
+			for i = 0 to n - 1 do
+				let hbox = GPack.hbox ~packing:photos_vbox#pack () in
+				let checkbox = GButton.check_button ~active:true ~packing:hbox#pack () in
+				let pixbuf = GdkPixbuf.from_file_at_size !photos.(i).filename ~width:200 ~height:200 in
+				let image = GMisc.image ~pixbuf ~width:200 ~packing:hbox#pack () in
+				let entry = GEdit.entry ~packing:(hbox#pack ~expand:true) () in
+				ignore (checkbox#connect#toggled ~callback:(fun () -> !photos.(i).checked <- checkbox#active));
+				ignore (entry#connect#changed ~callback:(fun () -> !photos.(i).legend <- entry#text));
+				GtkThread.sync progress#set_fraction (float_of_int i /. float_of_int n);
+				GtkThread.sync progress#set_text (string_of_int i ^ "/" ^ string_of_int n ^ " photos")
+			done;
+			GtkThread.sync dialog#destroy ();
+			GtkThread.sync photos_vbox#misc#show_all ()
 		in
-		Array.iteri add_photo !photos;
-		photos_vbox#misc#show_all ()
-			
+		ignore (Thread.create f ())
 	
 	let edit_config () =
 		let dialog = GWindow.dialog ~title:"Préférences" ~modal:true () in

@@ -14,7 +14,7 @@ photoalbum.opt: photoalbum.cmx
 	$(OCAMLOPT) -o $@ $(INCLUDES) unix.cmxa threads.cmxa xml-light.cmxa lablgtk.cmxa gtkThread.cmx gtkInit.cmx $^
 
 %.cmo: %.ml
-	$(OCAMLC) $(DEBUGFLAG) -c $(INCLUDES) $<
+	$(OCAMLC) $(DEBUGFLAG) -w y -c $(INCLUDES) $<
 
 %.cmx: %.ml
 	$(OCAMLOPT) -c $(INCLUDES) $<
